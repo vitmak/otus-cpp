@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
+
 
 // ("",  '.') -> [""]
 // ("11", '.') -> ["11"]
@@ -44,7 +46,25 @@ int main(int argc, char const *argv[])
             ip_pool.push_back(split(v.at(0), '.'));
         }
 
-        // TODO reverse lexicographically sort
+        enum IP_ADDR_LENGTH {
+            IP4 = 4,
+            IP6 = 6
+        };
+
+        // Returns true if 'lhs' ip - address is greater then 'rhs' ip - address.
+        auto isIPAddrGreater = [](const std::vector<std::string>& lhs, const std::vector<std::string>& rhs)->bool {
+            for (auto i = 0; i < IP_ADDR_LENGTH::IP4; ++i)
+            {
+                if (std::stoi(lhs[i]) > std::stoi(rhs[i]))
+                    return true;
+                else if (std::stoi(lhs[i]) < std::stoi(rhs[i]))
+                    return false;
+            }
+            return false;
+        };
+
+        // Reverse lexicographically sort
+        std::sort(ip_pool.begin(), ip_pool.end(), isIPAddrGreater);
 
         for(std::vector<std::vector<std::string> >::const_iterator ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
         {
@@ -123,8 +143,7 @@ int main(int argc, char const *argv[])
         // 39.46.86.85
         // 5.189.203.46
     }
-    catch(const std::exception &e)
-    {
+    catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
     }
 
