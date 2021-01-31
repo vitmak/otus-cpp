@@ -84,9 +84,6 @@ int main(int argc, char const *argv[])
         // - version compliance(IPv4 for our case);
         // - range of values([0..255]).
         auto checkIP = [&ip_pool, IPv=IP_ADDR_LENGTH::IPv4]() {
-            if (ip_pool.empty())
-                return;
-
             for (auto it_pool = ip_pool.cbegin(); it_pool != ip_pool.cend(); ++it_pool)
             {
                 if (it_pool->size() != IPv) {
