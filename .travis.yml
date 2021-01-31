@@ -15,7 +15,7 @@ before_script:
 - sudo apt-get update -qq
 - popd
 script:
-- cmake ./homework1
-- cmake --build ./homework1
-- cmake --build ./homework1 --target test
-- cmake --build ./homework1 --target package
+- cmake ./homeworks/homework1
+- cmake --build ./homeworks/homework1
+- cmake --build ./homeworks/homework1 --target test
+- cmake --build ./homeworks/homework1 --target package
