@@ -51,6 +51,25 @@ int main(int argc, char const *argv[])
             IPv6 = 6
         };
 
+        auto checkIPv4 = [&ip_pool]() {
+            if (ip_pool.empty())
+                return;
+
+            for (auto it_pool = ip_pool.cbegin(); it_pool != ip_pool.cend(); ++it_pool)
+            {
+                if (it_pool->size() != IP_ADDR_LENGTH::IPv4) {
+                    throw std::string("Invalid IP address: IPv4 required.");
+                }
+                
+                for (auto it_part = it_pool->cbegin(); it_part != it_pool->cend(); ++it_part) {
+                    auto value = std::atoi(it_part->c_str());
+                    if (value < 0 || value > 255) {
+                        throw std::string("Incorrect IP address value.");
+                    }
+                }
+            }
+        };
+
         // Returns true if 'lhs' ip - address is greater then 'rhs' ip - address.
         auto isIPAddrGreater = [](const std::vector<std::string>& lhs, const std::vector<std::string>& rhs)->bool {
             for (auto i = 0; i < IP_ADDR_LENGTH::IPv4; ++i)
@@ -62,6 +81,8 @@ int main(int argc, char const *argv[])
             }
             return false;
         };
+
+        checkIPv4();
 
         // Reverse lexicographically sort
         std::sort(ip_pool.begin(), ip_pool.end(), isIPAddrGreater);
@@ -209,6 +230,12 @@ int main(int argc, char const *argv[])
     }
     catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
+    }
+    catch (const std::string& e) {
+        std::cerr << e << std::endl;
+    }
+    catch (...) {
+        std::cerr << "Unknown exception!" << std::endl;
     }
 
     return 0;
