@@ -122,32 +122,40 @@ int main(int argc, char const *argv[])
             return filteredIP;
         };
         
-        std::cout << "filter({ 1, 2 });" << std::endl;
         // filter by first byte and output
-        auto ip = filter({ 1, 2 });
-        for (std::vector<std::vector<std::string> >::const_iterator i = ip.cbegin(); i != ip.cend(); ++i)
+        const auto &&filtered_ip1 = filter({ 1 });
+        for (std::vector<std::vector<std::string> >::const_iterator i = filtered_ip1.cbegin(); i != filtered_ip1.cend(); ++i)
         {
             for (std::vector<std::string>::const_iterator ip_part = i->cbegin(); ip_part != i->cend(); ++ip_part)
             {
                 if (ip_part != i->cbegin())
                 {
                     std::cout << ".";
-
                 }
                 std::cout << *ip_part;
             }
             std::cout << std::endl;
         }
 
-//        ip = filter({ 2 });
         // 1.231.69.33
         // 1.87.203.225
         // 1.70.44.170
         // 1.29.168.152
         // 1.1.234.8
 
-        // TODO filter by first and second bytes and output
-        // ip = filter(46, 70)
+        const auto&& filtered_ip2 = filter({ 46, 70 });
+        for (std::vector<std::vector<std::string> >::const_iterator i = filtered_ip2.cbegin(); i != filtered_ip2.cend(); ++i)
+        {
+            for (std::vector<std::string>::const_iterator ip_part = i->cbegin(); ip_part != i->cend(); ++ip_part)
+            {
+                if (ip_part != i->cbegin())
+                {
+                    std::cout << ".";
+                }
+                std::cout << *ip_part;
+            }
+            std::cout << std::endl;
+        }
 
         // 46.70.225.39
         // 46.70.147.26
