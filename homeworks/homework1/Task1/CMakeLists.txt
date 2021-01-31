@@ -9,7 +9,10 @@ endif()
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 find_package(GTest)
 
-configure_file(version.h.in version.h)
+configure_file(
+	version.h.in
+	${CMAKE_CURRENT_BINARY_DIR}/version.h
+)
 
 add_executable(helloworld_cli main.cpp)
 add_library(helloworld lib.cpp)
@@ -20,6 +23,13 @@ set_target_properties(helloworld_cli helloworld boost_test_version google_test_v
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
 )
+
+target_include_directories(
+	helloworld
+	PRIVATE
+	${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_include_directories(helloworld
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
