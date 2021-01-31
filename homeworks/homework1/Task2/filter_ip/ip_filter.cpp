@@ -92,7 +92,8 @@ int main(int argc, char const *argv[])
         // 1.29.168.152
         // 1.1.234.8
 
-        //
+        // Filters the IP addresses stored in ip_pool. Returns a vector of IP addresses that match the filtering conditions.
+        // ip_parts - contains filters for each byte of the IP address.The index in the ip_parts list determines the byte order of the IP address to filter.
         auto filter = [&ip_pool,ip_length = IP_ADDR_LENGTH::IPv4](std::initializer_list<uint8_t> ip_parts)->std::vector<std::vector<std::string>> {
             if (ip_parts.size() > ip_length)
             {
