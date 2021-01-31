@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 
 
 // ("",  '.') -> [""]
@@ -31,6 +32,32 @@ std::vector<std::string> split(const std::string &str, char d)
     return r;
 }
 
+
+// Reading IP addresses from a file.
+//std::vector<std::vector<std::string>> ReadIPAddressesFromFile(const std::string& path) {
+//    std::ifstream fin;
+//    fin.open(path);
+//
+//    if (!fin.is_open()) {
+//        throw std::string("File open error!");
+//    }
+//
+//    std::vector<std::vector<std::string>> ip_pool;
+//
+//    std::string line;
+//    while (!fin.eof()) {
+//        line = "";
+//        std::getline(fin, line);
+//
+//        std::vector<std::string> v = split(line, '\t');
+//        if (!v.at(0).empty()) {
+//            ip_pool.push_back(split(v.at(0), '.'));
+//        }
+//    }
+//
+//    return ip_pool;
+//}
+
 int main(int argc, char const *argv[])
 {
     try
@@ -46,18 +73,23 @@ int main(int argc, char const *argv[])
             ip_pool.push_back(split(v.at(0), '.'));
         }
 
+        //auto&& ip_pool = ReadIPAddressesFromFile("..\\ip_filter.TSV");
+
         enum IP_ADDR_LENGTH {
             IPv4 = 4,
             IPv6 = 6
         };
 
-        auto checkIPv4 = [&ip_pool]() {
+        // Checks IP addresses for the correctness of the following data:
+        // - version compliance(IPv4 for our case);
+        // - range of values([0..255]).
+        auto checkIP = [&ip_pool, IPv=IP_ADDR_LENGTH::IPv4]() {
             if (ip_pool.empty())
                 return;
 
             for (auto it_pool = ip_pool.cbegin(); it_pool != ip_pool.cend(); ++it_pool)
             {
-                if (it_pool->size() != IP_ADDR_LENGTH::IPv4) {
+                if (it_pool->size() != IPv) {
                     throw std::string("Invalid IP address: IPv4 required.");
                 }
                 
@@ -70,6 +102,8 @@ int main(int argc, char const *argv[])
             }
         };
 
+        checkIP();
+
         // Returns true if 'lhs' ip - address is greater then 'rhs' ip - address.
         auto isIPAddrGreater = [](const std::vector<std::string>& lhs, const std::vector<std::string>& rhs)->bool {
             for (auto i = 0; i < IP_ADDR_LENGTH::IPv4; ++i)
@@ -81,8 +115,6 @@ int main(int argc, char const *argv[])
             }
             return false;
         };
-
-        checkIPv4();
 
         // Reverse lexicographically sort
         std::sort(ip_pool.begin(), ip_pool.end(), isIPAddrGreater);
