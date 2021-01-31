@@ -66,19 +66,23 @@ int main(int argc, char const *argv[])
         // Reverse lexicographically sort
         std::sort(ip_pool.begin(), ip_pool.end(), isIPAddrGreater);
 
-        for(std::vector<std::vector<std::string> >::const_iterator ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
-        {
-            for(std::vector<std::string>::const_iterator ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
+        // Print IP addresses to console.
+        auto print_IP_addresses = [](const std::vector<std::vector<std::string>>& ip_pool) {
+            for (std::vector<std::vector<std::string> >::const_iterator ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
             {
-                if (ip_part != ip->cbegin())
+                for (std::vector<std::string>::const_iterator ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
                 {
-                    std::cout << ".";
-
+                    if (ip_part != ip->cbegin())
+                    {
+                        std::cout << ".";
+                    }
+                    std::cout << *ip_part;
                 }
-                std::cout << *ip_part;
+                std::cout << std::endl;
             }
-            std::cout << std::endl;
-        }
+        };
+
+        print_IP_addresses(ip_pool);
 
         // 222.173.235.246
         // 222.130.177.64
@@ -88,7 +92,7 @@ int main(int argc, char const *argv[])
         // 1.29.168.152
         // 1.1.234.8
 
-        
+        //
         auto filter = [&ip_pool,ip_length = IP_ADDR_LENGTH::IPv4](std::initializer_list<uint8_t> ip_parts)->std::vector<std::vector<std::string>> {
             if (ip_parts.size() > ip_length)
             {
@@ -124,18 +128,7 @@ int main(int argc, char const *argv[])
         
         // filter by first byte and output
         const auto &&filtered_ip1 = filter({ 1 });
-        for (std::vector<std::vector<std::string> >::const_iterator i = filtered_ip1.cbegin(); i != filtered_ip1.cend(); ++i)
-        {
-            for (std::vector<std::string>::const_iterator ip_part = i->cbegin(); ip_part != i->cend(); ++ip_part)
-            {
-                if (ip_part != i->cbegin())
-                {
-                    std::cout << ".";
-                }
-                std::cout << *ip_part;
-            }
-            std::cout << std::endl;
-        }
+        print_IP_addresses(filtered_ip1);
 
         // 1.231.69.33
         // 1.87.203.225
@@ -144,26 +137,39 @@ int main(int argc, char const *argv[])
         // 1.1.234.8
 
         const auto&& filtered_ip2 = filter({ 46, 70 });
-        for (std::vector<std::vector<std::string> >::const_iterator i = filtered_ip2.cbegin(); i != filtered_ip2.cend(); ++i)
-        {
-            for (std::vector<std::string>::const_iterator ip_part = i->cbegin(); ip_part != i->cend(); ++ip_part)
-            {
-                if (ip_part != i->cbegin())
-                {
-                    std::cout << ".";
-                }
-                std::cout << *ip_part;
-            }
-            std::cout << std::endl;
-        }
+        print_IP_addresses(filtered_ip2);
 
         // 46.70.225.39
         // 46.70.147.26
         // 46.70.113.73
         // 46.70.29.76
 
-        // TODO filter by any byte and output
-        // ip = filter_any(46)
+        // filter by any byte and output
+        auto filter_any = [&ip_pool, ip_length = IP_ADDR_LENGTH::IPv4](std::initializer_list<uint8_t> ip_parts)->std::vector<std::vector<std::string>> {
+            std::vector<std::vector<std::string>> filteredIP;
+
+            if (ip_pool.empty())
+                return filteredIP;
+
+            for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
+            {
+                for (auto it_filter = ip_parts.begin(); it_filter != ip_parts.end(); ++it_filter)
+                {
+                    auto it_find = std::find(ip->cbegin(), ip->cend(), std::to_string(*it_filter));
+                    if (it_find != ip->end())
+                    {
+                        filteredIP.push_back(*ip);
+                        break;
+                    }
+                }
+            }
+
+            return filteredIP;
+        };
+
+        // filter by any byte and output
+        const auto&& ip_filter_any = filter_any({ 46 });
+        print_IP_addresses(ip_filter_any);
 
         // 186.204.34.46
         // 186.46.222.194
