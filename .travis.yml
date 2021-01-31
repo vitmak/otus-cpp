@@ -16,6 +16,6 @@ before_script:
 - popd
 script:
 - cmake ./homeworks/homework1
-- cmake --build ./homeworks/homework1
-- cmake --build ./homeworks/homework1 --target test
-- cmake --build ./homeworks/homework1 --target package
+- cmake --build .
+- cmake --build . --target test
+- cmake --build . --target package
