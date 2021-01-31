@@ -47,13 +47,13 @@ int main(int argc, char const *argv[])
         }
 
         enum IP_ADDR_LENGTH {
-            IP4 = 4,
-            IP6 = 6
+            IPv4 = 4,
+            IPv6 = 6
         };
 
         // Returns true if 'lhs' ip - address is greater then 'rhs' ip - address.
         auto isIPAddrGreater = [](const std::vector<std::string>& lhs, const std::vector<std::string>& rhs)->bool {
-            for (auto i = 0; i < IP_ADDR_LENGTH::IP4; ++i)
+            for (auto i = 0; i < IP_ADDR_LENGTH::IPv4; ++i)
             {
                 if (std::stoi(lhs[i]) > std::stoi(rhs[i]))
                     return true;
@@ -88,9 +88,58 @@ int main(int argc, char const *argv[])
         // 1.29.168.152
         // 1.1.234.8
 
-        // TODO filter by first byte and output
-        // ip = filter(1)
+        
+        auto filter = [&ip_pool,ip_length = IP_ADDR_LENGTH::IPv4](std::initializer_list<uint8_t> ip_parts)->std::vector<std::vector<std::string>> {
+            if (ip_parts.size() > ip_length)
+            {
+                //TODO: Add throw "Uncorrect IP - address type."
+            }
 
+            std::vector<std::vector<std::string>> filteredIP;
+
+            if (ip_pool.empty())
+                return filteredIP;
+
+            for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
+            {
+                auto isFilterOk = true;
+                int ip_partIndices = 0;
+                for (auto ip_part = ip_parts.begin(); ip_part != ip_parts.end(); ++ip_part, ++ip_partIndices)
+                {
+                    if (ip->at(ip_partIndices) != std::to_string(*ip_part))
+                    {
+                        isFilterOk = false;
+                        break;
+                    }
+                }
+
+                if (isFilterOk)
+                {
+                    filteredIP.push_back(*ip);
+                }
+            }
+
+            return filteredIP;
+        };
+        
+        std::cout << "filter({ 1, 2 });" << std::endl;
+        // filter by first byte and output
+        auto ip = filter({ 1, 2 });
+        for (std::vector<std::vector<std::string> >::const_iterator i = ip.cbegin(); i != ip.cend(); ++i)
+        {
+            for (std::vector<std::string>::const_iterator ip_part = i->cbegin(); ip_part != i->cend(); ++ip_part)
+            {
+                if (ip_part != i->cbegin())
+                {
+                    std::cout << ".";
+
+                }
+                std::cout << *ip_part;
+            }
+            std::cout << std::endl;
+        }
+
+//        ip = filter({ 2 });
         // 1.231.69.33
         // 1.87.203.225
         // 1.70.44.170
