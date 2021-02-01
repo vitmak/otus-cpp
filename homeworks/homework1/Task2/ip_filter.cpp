@@ -80,26 +80,26 @@ int main(int argc, char const *argv[])
             IPv6 = 6
         };
 
-        //// Checks IP addresses for the correctness of the following data:
-        //// - version compliance(IPv4 for our case);
-        //// - range of values([0..255]).
-        //auto checkIP = [&ip_pool, IPv=IP_ADDR_LENGTH::IPv4]() {
-        //    for (auto it_pool = ip_pool.cbegin(); it_pool != ip_pool.cend(); ++it_pool)
-        //    {
-        //        if (it_pool->size() != IPv) {
-        //            throw std::string("Invalid IP address: IPv4 required.");
-        //        }
-        //        
-        //        for (auto it_part = it_pool->cbegin(); it_part != it_pool->cend(); ++it_part) {
-        //            auto value = std::atoi(it_part->c_str());
-        //            if (value < 0 || value > 255) {
-        //                throw std::string("Incorrect IP address value.");
-        //            }
-        //        }
-        //    }
-        //};
+        // Checks IP addresses for the correctness of the following data:
+        // - version compliance(IPv4 for our case);
+        // - range of values([0..255]).
+        auto checkIP = [&ip_pool, IPv=IP_ADDR_LENGTH::IPv4]() {
+            for (auto it_pool = ip_pool.cbegin(); it_pool != ip_pool.cend(); ++it_pool)
+            {
+                if (it_pool->size() != IPv) {
+                    throw std::string("Invalid IP address: IPv4 required.");
+                }
+                
+                for (auto it_part = it_pool->cbegin(); it_part != it_pool->cend(); ++it_part) {
+                    auto value = std::atoi(it_part->c_str());
+                    if (value < 0 || value > 255) {
+                        throw std::string("Incorrect IP address value.");
+                    }
+                }
+            }
+        };
 
-        //checkIP();
+        checkIP();
 
         //// Returns true if 'lhs' ip - address is greater then 'rhs' ip - address.
         //auto isIPAddrGreater = [](const std::vector<std::string>& lhs, const std::vector<std::string>& rhs)->bool {
