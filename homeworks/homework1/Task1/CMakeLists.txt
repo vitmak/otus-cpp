@@ -24,15 +24,10 @@ set_target_properties(helloworld_cli helloworld boost_test_version google_test_v
     CXX_STANDARD_REQUIRED ON
 )
 
-target_include_directories(
-	helloworld
-	PRIVATE
-	${CMAKE_CURRENT_BINARY_DIR}
+target_include_directories(helloworld
+	PRIVATE	${CMAKE_CURRENT_BINARY_DIR}
 )
 
-target_include_directories(helloworld
-    PRIVATE "${CMAKE_BINARY_DIR}"
-)
 set_target_properties(boost_test_version PROPERTIES
     COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
     INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
