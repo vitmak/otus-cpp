@@ -79,7 +79,6 @@ else ()
 endif()
 
 
-
 install(TARGETS helloworld_cli RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
@@ -91,8 +90,6 @@ set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
 set(CPACK_PACKAGE_CONTACT example@example.com)
 
 include(CPack)
-
-#enable_testing()
 
 add_test(boost_test_version boost_test_version)
 add_test(google_test_version google_test_version)
