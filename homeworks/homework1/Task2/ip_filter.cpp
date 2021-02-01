@@ -80,41 +80,41 @@ int main(int argc, char const *argv[])
             IPv6 = 6
         };
 
-        // Checks IP addresses for the correctness of the following data:
-        // - version compliance(IPv4 for our case);
-        // - range of values([0..255]).
-        auto checkIP = [&ip_pool, IPv=IP_ADDR_LENGTH::IPv4]() {
-            for (auto it_pool = ip_pool.cbegin(); it_pool != ip_pool.cend(); ++it_pool)
-            {
-                if (it_pool->size() != IPv) {
-                    throw std::string("Invalid IP address: IPv4 required.");
-                }
-                
-                for (auto it_part = it_pool->cbegin(); it_part != it_pool->cend(); ++it_part) {
-                    auto value = std::atoi(it_part->c_str());
-                    if (value < 0 || value > 255) {
-                        throw std::string("Incorrect IP address value.");
-                    }
-                }
-            }
-        };
+        //// Checks IP addresses for the correctness of the following data:
+        //// - version compliance(IPv4 for our case);
+        //// - range of values([0..255]).
+        //auto checkIP = [&ip_pool, IPv=IP_ADDR_LENGTH::IPv4]() {
+        //    for (auto it_pool = ip_pool.cbegin(); it_pool != ip_pool.cend(); ++it_pool)
+        //    {
+        //        if (it_pool->size() != IPv) {
+        //            throw std::string("Invalid IP address: IPv4 required.");
+        //        }
+        //        
+        //        for (auto it_part = it_pool->cbegin(); it_part != it_pool->cend(); ++it_part) {
+        //            auto value = std::atoi(it_part->c_str());
+        //            if (value < 0 || value > 255) {
+        //                throw std::string("Incorrect IP address value.");
+        //            }
+        //        }
+        //    }
+        //};
 
-        checkIP();
+        //checkIP();
 
-        // Returns true if 'lhs' ip - address is greater then 'rhs' ip - address.
-        auto isIPAddrGreater = [](const std::vector<std::string>& lhs, const std::vector<std::string>& rhs)->bool {
-            for (auto i = 0; i < IP_ADDR_LENGTH::IPv4; ++i)
-            {
-                if (std::stoi(lhs[i]) > std::stoi(rhs[i]))
-                    return true;
-                else if (std::stoi(lhs[i]) < std::stoi(rhs[i]))
-                    return false;
-            }
-            return false;
-        };
+        //// Returns true if 'lhs' ip - address is greater then 'rhs' ip - address.
+        //auto isIPAddrGreater = [](const std::vector<std::string>& lhs, const std::vector<std::string>& rhs)->bool {
+        //    for (auto i = 0; i < IP_ADDR_LENGTH::IPv4; ++i)
+        //    {
+        //        if (std::stoi(lhs[i]) > std::stoi(rhs[i]))
+        //            return true;
+        //        else if (std::stoi(lhs[i]) < std::stoi(rhs[i]))
+        //            return false;
+        //    }
+        //    return false;
+        //};
 
-        // Reverse lexicographically sort
-        std::sort(ip_pool.begin(), ip_pool.end(), isIPAddrGreater);
+        //// Reverse lexicographically sort
+        //std::sort(ip_pool.begin(), ip_pool.end(), isIPAddrGreater);
 
         // Print IP addresses to console.
         auto print_IP_addresses = [](const std::vector<std::vector<std::string>>& ip_pool) {
@@ -142,85 +142,85 @@ int main(int argc, char const *argv[])
         // 1.29.168.152
         // 1.1.234.8
 
-        // Filters the IP addresses stored in ip_pool. Returns a vector of IP addresses that match the filtering conditions.
-        // ip_parts - contains filters for each byte of the IP address.The index in the ip_parts list determines the byte order of the IP address to filter.
-        auto filter = [&ip_pool,ip_length = IP_ADDR_LENGTH::IPv4](std::initializer_list<uint8_t> ip_parts)->std::vector<std::vector<std::string>> {
-            if (ip_parts.size() > ip_length)
-            {
-                //TODO: Add throw "Uncorrect IP - address type."
-            }
+        //// Filters the IP addresses stored in ip_pool. Returns a vector of IP addresses that match the filtering conditions.
+        //// ip_parts - contains filters for each byte of the IP address.The index in the ip_parts list determines the byte order of the IP address to filter.
+        //auto filter = [&ip_pool,ip_length = IP_ADDR_LENGTH::IPv4](std::initializer_list<uint8_t> ip_parts)->std::vector<std::vector<std::string>> {
+        //    if (ip_parts.size() > ip_length)
+        //    {
+        //        //TODO: Add throw "Uncorrect IP - address type."
+        //    }
 
-            std::vector<std::vector<std::string>> filteredIP;
+        //    std::vector<std::vector<std::string>> filteredIP;
 
-            if (ip_pool.empty())
-                return filteredIP;
+        //    if (ip_pool.empty())
+        //        return filteredIP;
 
-            for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
-            {
-                auto isFilterOk = true;
-                int ip_partIndices = 0;
-                for (auto ip_part = ip_parts.begin(); ip_part != ip_parts.end(); ++ip_part, ++ip_partIndices)
-                {
-                    if (ip->at(ip_partIndices) != std::to_string(*ip_part))
-                    {
-                        isFilterOk = false;
-                        break;
-                    }
-                }
+        //    for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
+        //    {
+        //        auto isFilterOk = true;
+        //        int ip_partIndices = 0;
+        //        for (auto ip_part = ip_parts.begin(); ip_part != ip_parts.end(); ++ip_part, ++ip_partIndices)
+        //        {
+        //            if (ip->at(ip_partIndices) != std::to_string(*ip_part))
+        //            {
+        //                isFilterOk = false;
+        //                break;
+        //            }
+        //        }
 
-                if (isFilterOk)
-                {
-                    filteredIP.push_back(*ip);
-                }
-            }
+        //        if (isFilterOk)
+        //        {
+        //            filteredIP.push_back(*ip);
+        //        }
+        //    }
 
-            return filteredIP;
-        };
-        
-        // filter by first byte and output
-        const auto &&filtered_ip1 = filter({ 1 });
-        print_IP_addresses(filtered_ip1);
+        //    return filteredIP;
+        //};
+        //
+        //// filter by first byte and output
+        //const auto &&filtered_ip1 = filter({ 1 });
+        //print_IP_addresses(filtered_ip1);
 
-        // 1.231.69.33
-        // 1.87.203.225
-        // 1.70.44.170
-        // 1.29.168.152
-        // 1.1.234.8
+        //// 1.231.69.33
+        //// 1.87.203.225
+        //// 1.70.44.170
+        //// 1.29.168.152
+        //// 1.1.234.8
 
-        const auto&& filtered_ip2 = filter({ 46, 70 });
-        print_IP_addresses(filtered_ip2);
+        //const auto&& filtered_ip2 = filter({ 46, 70 });
+        //print_IP_addresses(filtered_ip2);
 
-        // 46.70.225.39
-        // 46.70.147.26
-        // 46.70.113.73
-        // 46.70.29.76
+        //// 46.70.225.39
+        //// 46.70.147.26
+        //// 46.70.113.73
+        //// 46.70.29.76
 
-        // filter by any byte and output
-        auto filter_any = [&ip_pool, ip_length = IP_ADDR_LENGTH::IPv4](std::initializer_list<uint8_t> ip_parts)->std::vector<std::vector<std::string>> {
-            std::vector<std::vector<std::string>> filteredIP;
+        //// filter by any byte and output
+        //auto filter_any = [&ip_pool, ip_length = IP_ADDR_LENGTH::IPv4](std::initializer_list<uint8_t> ip_parts)->std::vector<std::vector<std::string>> {
+        //    std::vector<std::vector<std::string>> filteredIP;
 
-            if (ip_pool.empty())
-                return filteredIP;
+        //    if (ip_pool.empty())
+        //        return filteredIP;
 
-            for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
-            {
-                for (auto it_filter = ip_parts.begin(); it_filter != ip_parts.end(); ++it_filter)
-                {
-                    auto it_find = std::find(ip->cbegin(), ip->cend(), std::to_string(*it_filter));
-                    if (it_find != ip->end())
-                    {
-                        filteredIP.push_back(*ip);
-                        break;
-                    }
-                }
-            }
+        //    for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
+        //    {
+        //        for (auto it_filter = ip_parts.begin(); it_filter != ip_parts.end(); ++it_filter)
+        //        {
+        //            auto it_find = std::find(ip->cbegin(), ip->cend(), std::to_string(*it_filter));
+        //            if (it_find != ip->end())
+        //            {
+        //                filteredIP.push_back(*ip);
+        //                break;
+        //            }
+        //        }
+        //    }
 
-            return filteredIP;
-        };
+        //    return filteredIP;
+        //};
 
-        // filter by any byte and output
-        const auto&& ip_filter_any = filter_any({ 46 });
-        print_IP_addresses(ip_filter_any);
+        //// filter by any byte and output
+        //const auto&& ip_filter_any = filter_any({ 46 });
+        //print_IP_addresses(ip_filter_any);
 
         // 186.204.34.46
         // 186.46.222.194
