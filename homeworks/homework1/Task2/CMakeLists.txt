@@ -9,3 +9,31 @@ set_target_properties(
 	CXX_STANDART 14
 	CXX_STANDART_REQUIRED ON
 )
+
+if (MSVC)
+    target_compile_options(helloworld_cli PRIVATE
+        /W4
+    )
+    target_compile_options(helloworld PRIVATE
+        /W4
+    )
+    target_compile_options(boost_test_version PRIVATE
+        /W4
+    )
+    target_compile_options(google_test_version PRIVATE
+        /W4
+    )
+else ()
+    target_compile_options(helloworld_cli PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+    target_compile_options(helloworld PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+    target_compile_options(boost_test_version PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+    target_compile_options(google_test_version PRIVATE
+        -Wall -Wextra -pedantic -Werror
+    )
+endif()
