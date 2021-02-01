@@ -90,6 +90,3 @@ set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
 set(CPACK_PACKAGE_CONTACT example@example.com)
 
 include(CPack)
-
-add_test(boost_test_version boost_test_version)
-add_test(google_test_version google_test_version)
