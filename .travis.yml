@@ -3,16 +3,13 @@ before_script:
 - sudo apt-get install libboost-test-dev -y
 - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
 - sudo apt-get update -qq
-- pushd ~
-- git clone https://github.com/google/googletest.git
-- cd googletest
-- mkdir build && cd build
-- cmake .. -DBUILD_SHARED_LIBS=ON -DINSTALL_GTEST=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr
-- make -j8
+- git clone https://github.com/google/googletest.git -b release-1.10.0
+- pushd googletest
+- mkdir build
+- cd build
+- cmake ..
+- make
 - sudo make install
-- sudo ldconfig
-- echo "finish prepare"
-- sudo apt-get update -qq
 - popd
 script:
 - cmake ./homeworks/homework1
@@ -22,7 +19,6 @@ script:
 deploy:
   provider: script
   skip_cleanup: true
+  - curl -T homework1-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -uvitmak:$BINTRAY_API_KEY "https://api.bintray.com/content/vitmak/otus-cpp/homeworks/$TRAVIS_BUILD_NUMBER/homework1-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
   on:
     branch: main
-  script:
-  - curl -T homework1-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -uvitmak:$BINTRAY_API_KEY "https://bintray.com/vitmak/otus-cpp/homeworks/$TRAVIS_BUILD_NUMBER/homework1-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
