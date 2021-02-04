@@ -73,8 +73,9 @@ int main(int argc, char const *argv[])
             ip_pool.push_back(split(v.at(0), '.'));
         }
 
-        //auto&& ip_pool = ReadIPAddressesFromFile("..\\ip_filter.TSV");
+        //auto ip_pool = ReadIPAddressesFromFile("..\\ip_filter.TSV");
 
+        
         enum IP_ADDR_LENGTH {
             IPv4 = 4,
             IPv6 = 6
@@ -178,8 +179,8 @@ int main(int argc, char const *argv[])
         };
         
         // filter by first byte and output
-        const auto &&filtered_ip1 = filter({ 1 });
-        print_IP_addresses(filtered_ip1);
+        auto filtered_ip = filter({ 1 });
+        print_IP_addresses(filtered_ip);
 
         // 1.231.69.33
         // 1.87.203.225
@@ -187,8 +188,8 @@ int main(int argc, char const *argv[])
         // 1.29.168.152
         // 1.1.234.8
 
-        const auto&& filtered_ip2 = filter({ 46, 70 });
-        print_IP_addresses(filtered_ip2);
+        filtered_ip = filter({ 46, 70 });
+        print_IP_addresses(filtered_ip);
 
         // 46.70.225.39
         // 46.70.147.26
@@ -219,8 +220,8 @@ int main(int argc, char const *argv[])
         };
 
         // filter by any byte and output
-        const auto&& ip_filter_any = filter_any({ 46 });
-        print_IP_addresses(ip_filter_any);
+        filtered_ip = filter_any({ 46 });
+        print_IP_addresses(filtered_ip);
 
         // 186.204.34.46
         // 186.46.222.194
