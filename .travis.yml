@@ -3,13 +3,16 @@ before_script:
 - sudo apt-get install libboost-test-dev -y
 - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
 - sudo apt-get update -qq
-- git clone https://github.com/google/googletest.git -b release-1.10.0
-- pushd googletest
-- mkdir build
-- cd build
-- cmake ..
-- make
+- pushd ~
+- git clone https://github.com/google/googletest.git
+- cd googletest
+- mkdir build && cd build
+- cmake .. -DBUILD_SHARED_LIBS=ON -DINSTALL_GTEST=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr
+- make -j8
 - sudo make install
+- sudo ldconfig
+- echo "finish prepare"
+- sudo apt-get update -qq
 - popd
 script:
 - cmake ./homeworks/homework1
