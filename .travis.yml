@@ -25,4 +25,4 @@ deploy:
   on:
     branch: main
   script:
-  - curl -T homework1-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -vitmak:$BINTRAY_API_KEY "https://bintray.com/vitmak/otus-cpp/homeworks/$TRAVIS_BUILD_NUMBER/homework1-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
+  - curl -T homework1-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -uvitmak:$BINTRAY_API_KEY "https://bintray.com/vitmak/otus-cpp/homeworks/$TRAVIS_BUILD_NUMBER/homework1-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
