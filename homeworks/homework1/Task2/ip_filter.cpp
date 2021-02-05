@@ -85,10 +85,10 @@ int main()
         // Checks IP addresses for the correctness of the following data:
         // - version compliance(IPv4 for our case);
         // - range of values([0..255]).
-        auto checkIP = [&ip_pool, IPv=IP_ADDR_LENGTH::IPv4]() {
+        auto checkIP = [&ip_pool](size_t sizeOfIP) {
             for (auto it_pool = ip_pool.cbegin(); it_pool != ip_pool.cend(); ++it_pool)
             {
-                if (it_pool->size() != IPv) {
+                if (it_pool->size() != sizeOfIP) {
                     // "Invalid IP address: IPv4 required."
                     throw std::exception{};
                 }
@@ -103,7 +103,7 @@ int main()
             }
         };
 
-        checkIP();
+        checkIP(static_cast<size_t>(IP_ADDR_LENGTH::IPv4));
 
         // Returns true if 'lhs' ip - address is greater then 'rhs' ip - address.
         auto isIPAddrGreater = [](const std::vector<std::string>& lhs, const std::vector<std::string>& rhs)->bool {
