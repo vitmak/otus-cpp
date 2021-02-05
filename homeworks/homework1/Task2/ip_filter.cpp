@@ -59,7 +59,7 @@ std::vector<std::string> split(const std::string &str, char d)
 //    return ip_pool;
 //}
 
-int main(int argc, char const *argv[])
+int main()
 {
     try
     {
