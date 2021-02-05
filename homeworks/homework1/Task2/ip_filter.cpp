@@ -39,7 +39,8 @@ std::vector<std::string> split(const std::string &str, char d)
 //    fin.open(path);
 //
 //    if (!fin.is_open()) {
-//        throw std::exception("File open error!");
+//        // "File open error!"
+//        throw std::exception{};
 //    }
 //
 //    std::vector<std::vector<std::string>> ip_pool;
@@ -88,13 +89,15 @@ int main(int argc, char const *argv[])
             for (auto it_pool = ip_pool.cbegin(); it_pool != ip_pool.cend(); ++it_pool)
             {
                 if (it_pool->size() != IPv) {
-                    throw std::exception("Invalid IP address: IPv4 required.");
+                    // "Invalid IP address: IPv4 required."
+                    throw std::exception{};
                 }
                 
                 for (auto it_part = it_pool->cbegin(); it_part != it_pool->cend(); ++it_part) {
                     auto value = std::atoi(it_part->c_str());
                     if (value < 0 || value > 255) {
-                        throw std::exception("Incorrect IP address value.");
+                        // "Incorrect IP address value."
+                        throw std::exception{};
                     }
                 }
             }
