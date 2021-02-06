@@ -107,6 +107,7 @@ int main()
         // Convert from std::vector<std::vector<std::string>> to std::vector<std::vector<uint8_t>>
         auto conv = [](const std::vector<std::vector<std::string> >& source) {
             std::vector<std::vector<uint8_t>> ip_pool;
+            ip_pool.reserve(source.size());
 
             if (source.empty()) {
                 return ip_pool;
@@ -175,6 +176,7 @@ int main()
             }
 
             std::vector<std::vector<uint8_t>> filteredIP;
+            filteredIP.reserve(ip_pool.size());
 
             if (ip_pool.empty())
                 return filteredIP;
@@ -222,6 +224,7 @@ int main()
         // filter by any byte and output
         auto filter_any = [&ip_pool](std::initializer_list<uint8_t> ip_parts)->std::vector<std::vector<uint8_t>> {
             std::vector<std::vector<uint8_t>> filteredIP;
+            filteredIP.reserve(ip_pool.size());
 
             if (ip_pool.empty())
                 return filteredIP;
