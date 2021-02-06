@@ -32,37 +32,37 @@ std::vector<std::string> split(const std::string &str, char d)
     return r;
 }
 
-
 // Reading IP addresses from a file.
-//std::vector<std::vector<std::string>> ReadIPAddressesFromFile(const std::string& path) {
-//    std::ifstream fin;
-//    fin.open(path);
-//
-//    if (!fin.is_open()) {
-//        // "File open error!"
-//        throw std::exception{};
-//    }
-//
-//    std::vector<std::vector<std::string>> ip_pool;
-//
-//    std::string line;
-//    while (!fin.eof()) {
-//        line = "";
-//        std::getline(fin, line);
-//
-//        std::vector<std::string> v = split(line, '\t');
-//        if (!v.at(0).empty()) {
-//            ip_pool.push_back(split(v.at(0), '.'));
-//        }
-//    }
-//
-//    return ip_pool;
-//}
+std::vector<std::vector<std::string>> ReadIPAddressesFromFile(const std::string& path) {
+    std::ifstream fin;
+    fin.open(path);
+
+    if (!fin.is_open()) {
+        // "File open error!"
+        throw std::exception{};
+    }
+
+    std::vector<std::vector<std::string>> ip_pool;
+
+    std::string line;
+    while (!fin.eof()) {
+        line = "";
+        std::getline(fin, line);
+
+        std::vector<std::string> v = split(line, '\t');
+        if (!v.at(0).empty()) {
+            ip_pool.push_back(split(v.at(0), '.'));
+        }
+    }
+
+    return ip_pool;
+}
 
 int main()
 {
     try
     {
+        // Use this code to read data from console
         std::vector<std::vector<std::string> > data;
 
         for(std::string line; std::getline(std::cin, line);)
@@ -74,7 +74,8 @@ int main()
             data.push_back(split(v.at(0), '.'));
         }
 
-        //auto ip_pool = ReadIPAddressesFromFile("..\\ip_filter.TSV");
+        // Use this code to read data from file ip_filter.TSV
+        //auto data = ReadIPAddressesFromFile("..\\ip_filter.TSV");
         
         enum IP_ADDR_LENGTH {
             IPv4 = 4,
