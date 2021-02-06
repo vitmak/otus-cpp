@@ -77,7 +77,7 @@ int main()
         // Use this code to read data from file ip_filter.TSV
         //auto data = ReadIPAddressesFromFile("..\\ip_filter.TSV");
         
-        enum IP_ADDR_LENGTH {
+        enum class IP_ADDR_LENGTH {
             IPv4 = 4,
             IPv6 = 6
         };
@@ -127,7 +127,7 @@ int main()
 
         // Returns true if 'lhs' ip - address is greater then 'rhs' ip - address.
         auto isIPAddrGreater = [](const std::vector<uint8_t>& lhs, const std::vector<uint8_t>& rhs)->bool {
-            for (auto i = 0; i < IP_ADDR_LENGTH::IPv4; ++i)
+            for (auto i = 0; i < static_cast<int>(IP_ADDR_LENGTH::IPv4); ++i)
             {
                 if (lhs[i] > rhs[i])
                     return true;
@@ -169,7 +169,7 @@ int main()
         // Filters the IP addresses stored in ip_pool. Returns a vector of IP addresses that match the filtering conditions.
         // ip_parts - contains filters for each byte of the IP address.The index in the ip_parts list determines the byte order of the IP address to filter.
         auto filter = [&ip_pool,ip_length = IP_ADDR_LENGTH::IPv4](std::initializer_list<uint8_t> ip_parts)->std::vector<std::vector<uint8_t>> {
-            if (ip_parts.size() > ip_length)
+            if (ip_parts.size() > static_cast<size_t>(ip_length))
             {
                 //TODO: Add throw "Uncorrect IP - address type."
             }
