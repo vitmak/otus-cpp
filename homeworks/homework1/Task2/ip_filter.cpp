@@ -38,8 +38,7 @@ std::vector<std::vector<std::string>> ReadIPAddressesFromFile(const std::string&
     fin.open(path);
 
     if (!fin.is_open()) {
-        // "File open error!"
-        throw std::exception{};
+        throw std::runtime_error{ "File open error!" };
     }
 
     std::vector<std::vector<std::string>> ip_pool;
@@ -89,14 +88,12 @@ int main()
             for (auto it_pool = ip_pool.cbegin(); it_pool != ip_pool.cend(); ++it_pool)
             {
                 if (it_pool->size() != sizeOfIP) {
-                    // "Invalid IP address: IPv4 required."
-                    throw std::exception{};
+                    throw std::runtime_error{ "Invalid IP address: IPv4 required." };
                 }
                 
                 for (auto it_part = it_pool->cbegin(); it_part != it_pool->cend(); ++it_part) {
                     if (std::stoi(*it_part) < 0 || std::stoi(*it_part) > 255) {
-                        // "Incorrect IP address value."
-                        throw std::exception{};
+                        throw std::runtime_error{ "Incorrect IP address value." };
                     }
                 }
             }
@@ -174,7 +171,7 @@ int main()
         auto filter = [&ip_pool,ip_length = IP_ADDR_LENGTH::IPv4](std::initializer_list<uint8_t> ip_parts)->std::vector<ip_address> {
             if (ip_parts.size() > static_cast<size_t>(ip_length))
             {
-                //TODO: Add throw "Uncorrect IP - address type."
+                throw std::runtime_error{"Uncorrected filter of ip address."};
             }
 
             std::vector<ip_address> filteredIP;
