@@ -21,12 +21,12 @@ struct custom_allocator {
         using other = custom_allocator<U>;
     };
 
-    custom_allocator() = delete;
+    custom_allocator() = default;
 
     custom_allocator(size_t size) : m_size(size) {
         std::cout << __PRETTY_FUNCTION__ << std::endl;
     }
-    //custom_allocator(const custom_allocator&) = delete;
+    
     ~custom_allocator() = default;
 
     template<typename U> 
@@ -63,7 +63,13 @@ struct custom_allocator {
 
     void deallocate(pointer p, std::size_t n) {
         std::cout << __PRETTY_FUNCTION__ << "[n = " << n << "]" << std::endl;
-        std::free(p);
+        if (n == m_size) {
+            std::cout << "with free" << std::endl;
+            std::free(p);
+        }
+        else {
+            std::cout << "without free" << std::endl;
+        }
     }
 
     template<typename U, typename ...Args>
@@ -78,37 +84,48 @@ struct custom_allocator {
         p->~T();
     }
 
-    size_t m_size = 0;
+    size_t m_size = 10;
     pointer m_memory = nullptr;
 };
 
+//template<int V>
+//struct fact {
+//    static const int value = V * factorial<V-1>::value;
+//};
+//
+//template<>
+//struct fact<0> {
+//    static const int value = 1;
+//};
+
+
 int main(int, char *[]) {
+    
     custom_allocator<int> customAllocator{5};
-    std::vector<int, custom_allocator<int>> v{ std::move(customAllocator) };
-    // v.reserve(5);
-    for (int i = 0; i < 6; ++i) {
-        std::cout << "vector capacity: " << v.capacity() << "\t" << "vector size = " << v.size() << std::endl;
-        v.emplace_back(i);
-        std::cout << std::endl;
-    }
-
-    // std::cout << "\n\n\n\nAfter creation\n\n\n\n" << std::endl;
-    // auto v2 = v;
-
-    /*auto m = std::map<
+  
+    auto fact = [](int val) {
+        auto res{ 0 };
+        for (auto i = 1; i < val; ++i)
+            res *= i;
+        return res;
+    };
+  
+    auto m = std::map<
         int,
-        float,
+        int,
         std::less<int>,
-        custom_allocator<
-            std::pair<
-                const int, float
-            >
-        >
+        custom_allocator<std::pair<const int, int>>
     >{};
 
-    for (int i = 0; i < 1; ++i) {
-        m[i] = static_cast<float>(i);
-    }*/
+    const auto nMaxSize{ 10 };
+
+    for (auto i = 0; i < nMaxSize; ++i) {
+        m[i] = fact(i);
+    }
+
+    for (const auto v : m) {
+        std::cout << v.first << "\t" << v.second << std::endl;
+    }
 
     return 0;
 }
