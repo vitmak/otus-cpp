@@ -1,5 +1,7 @@
 #pragma once
 
+#include"pretty.h"
+
 template<typename T, size_t S>
 struct reserving_allocator {
     using value_type = T;
@@ -24,12 +26,9 @@ struct reserving_allocator {
 
     }
 
-    T* allocate(std::size_t n) {
-#ifndef USE_PRETTY
-        std::cout << "allocate: [n = " << n << "]" << std::endl;
-#else
+    pointer allocate(std::size_t n) {
         std::cout << __PRETTY_FUNCTION__ << "[n = " << n << "]" << std::endl;
-#endif
+
         auto p = std::malloc(n * sizeof(T));
         if (p == nullptr)
             throw std::bad_alloc();
@@ -37,30 +36,19 @@ struct reserving_allocator {
     }
 
     void deallocate(T* p, std::size_t n) {
-#ifndef USE_PRETTY
-        std::cout << "deallocate: [n  = " << n << "] " << std::endl;
-#else
         std::cout << __PRETTY_FUNCTION__ << "[n = " << n << "]" << std::endl;
-#endif
         std::free(p);
     }
 
     template<typename U, typename ...Args>
     void construct(U* p, Args &&...args) {
-#ifndef USE_PRETTY
-        std::cout << "construct" << std::endl;
-#else
         std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
         new(p) U(std::forward<Args>(args)...);
     };
 
-    void destroy(T* p) {
-#ifndef USE_PRETTY
-        std::cout << "destroy" << std::endl;
-#else
+    template<typename U>
+    void destroy(U* p) {
         std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
-        p->~T();
+        ((pointer)p)->~T();
     }
 };
