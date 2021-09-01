@@ -4,9 +4,10 @@
 
 int main() {
     // Fill standart map
+    const auto MaxElements = 10;
     auto standartMap = std::map<int, int>{};
     standartMap[0] = 1;
-    for (auto i = 1; i < 10; ++i)
+    for (auto i = 1; i < MaxElements; ++i)
         standartMap[i] = i * standartMap[i - 1];
 
     for (const auto& v : standartMap)
