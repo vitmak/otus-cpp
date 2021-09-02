@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <iostream>
 #include <vector>
 #include <forward_list>
 
@@ -12,9 +13,13 @@ template<typename T>
 class MemoryArea {
 public:
 	MemoryArea(T* start) : m_start(start) {
-		/*bool isFree = m_state == MemoryStates::eFree;
-		std::cout << m_start << " state: " << isFree << std::endl;*/
+		bool isFree = m_state == MemoryStates::eFree;
+		std::cout << m_start << " state: " << isFree << std::endl;
 	}
+
+	/*bool operator== (const MemoryArea<T>& rhs) const {
+		return m_start == rhs.m_start && m_state == rhs.m_state;
+	}*/
 	
 	MemoryStates GetState() const {
 		return m_state;
@@ -49,27 +54,53 @@ public:
 		std::cout << "Create memory block with start: " << m_start << std::endl;
 		m_memoryAreas.reserve(m_elementsCount);
 		for (auto i = 0; i < m_elementsCount; ++i) {
-			m_memoryAreas.emplace_back(MemoryArea{start + i});
+			m_memoryAreas.emplace_back(MemoryArea<T>{start + i});
 		}
 	}
+
+	//--
+	void ShowBlockStates() const {
+		for (const auto& v : m_memoryAreas) {
+			bool isFree = v.GetState() == MemoryStates::eFree;
+			std::cout << v.GetStart() << " state: " << isFree << std::endl;
+		}
+	}
+	//--
 	
 	bool isContain(const T* element) const {
 		return m_start <= element && element < (m_start + m_elementsCount);
 	}
 
-	T* GetFreeMemory() const {
-		for (const auto& v : m_memoryAreas) {
-			if (v.GetState() == MemoryStates::eFree)
-				return v.GetStart();
+	T* GetFreeMemory(size_t elementsCount) const {
+		for (auto it = m_memoryAreas.cbegin(); it != m_memoryAreas.cend(); ++it) {
+			auto sequence = 0;
+			for (auto iter = it; iter != m_memoryAreas.cend(); ++iter) {
+				if (iter->GetState() == MemoryStates::eFree) {
+					if (++sequence == elementsCount)
+						return it->GetStart();
+				}
+				else
+					break;					
+			}
 		}
 
 		return nullptr;
 	}
 
-	void SetState(const T* element, MemoryStates state) {
-		auto memArea = const_cast<MemoryArea<T>*> (GetMemoryArea(element));
-		if (memArea != nullptr)
-			memArea->SetState(state);
+	void SetState(const T* startAddr, size_t elementsCount, MemoryStates state) {
+		auto memArea = const_cast<MemoryArea<T>*> (GetMemoryArea(startAddr));
+		if (memArea != nullptr) {
+			//auto it = std::find(m_memoryAreas.begin(), m_memoryAreas.end(), memArea);
+			for (auto it = m_memoryAreas.begin(); it != m_memoryAreas.end(); ++it) {
+				if (it->GetStart() == memArea->GetStart() && it->GetState() == memArea->GetState()) {
+					for (; it != m_memoryAreas.end(); ++it) {
+						it->SetState(state);
+						if (--elementsCount == 0)
+						break;
+					}
+				}
+			}
+		}
 	}
 	
 private:
@@ -86,7 +117,6 @@ private:
 				return v.GetMemoryArea();
 		}
 
-		_ASSERT(false);
 		return nullptr;
 	}
 };
@@ -96,40 +126,42 @@ template<typename T, size_t N>
 class MemoryManager {
 public:
 	MemoryManager() = default;
-	~MemoryManager() = default;
+	~MemoryManager() {
+		for (auto& v : m_memoryBlocks) {
 
-	
-	T* GetFreeMemory() {
-		std::cout << "MemoryManager::GetFreeMemory" << std::endl;
-		
-		T* freeMemory = nullptr;
-		for (const auto& v : m_memoryBlocks) {
-			freeMemory = v.GetFreeMemory();
-			if (nullptr != freeMemory)
-				break;
 		}
-
-		if (nullptr == freeMemory) {
-			std::cout << "Create new memory block!" << std::endl;
-			freeMemory = reinterpret_cast<T*> (std::malloc(N * sizeof(T)));
-			if (nullptr == freeMemory)
-				throw std::bad_alloc();
-
-			m_memoryBlocks.push_front(MemoryBlock<T, N>{freeMemory});
-		}
-		
-		std::cout << freeMemory << std::endl;
-		_ASSERT(nullptr != freeMemory);
-		if (nullptr != freeMemory)
-			SetMemoryState(freeMemory, MemoryStates::eBusy);
-
-		return freeMemory;
 	}
 
-	void SetMemoryState(const T* element, MemoryStates state) {
+	T* GetFreeMemory(size_t elementsCount) {
+		std::cout << "MemoryManager::GetFreeMemory" << std::endl;
+		
+		T* startAddr = nullptr;
+		for (const auto& v : m_memoryBlocks) {
+			v.ShowBlockStates();
+			startAddr = v.GetFreeMemory(elementsCount);
+			if (nullptr != startAddr) {
+				std::cout << "Find free memory in the current block: " << startAddr << std::endl;
+				break;
+			}
+		}
+
+		if (nullptr == startAddr) {
+			std::cout << "Create new memory block!" << std::endl;
+			startAddr = reinterpret_cast<T*> (std::malloc(N * sizeof(T)));
+			if (nullptr == startAddr)
+				throw std::bad_alloc();
+
+			m_memoryBlocks.push_front(MemoryBlock<T, N>{startAddr});
+		}
+		
+		SetMemoryState(startAddr, elementsCount, MemoryStates::eBusy);
+		return startAddr;
+	}
+
+	void SetMemoryState(const T* startAddr, size_t count, MemoryStates state) {
 		for (auto& v : m_memoryBlocks) {
-			if (v.isContain(element)) {
-				v.SetState(element, state);
+			if (v.isContain(startAddr)) {
+				v.SetState(startAddr, count, state);
 				break;
 			}
 		}

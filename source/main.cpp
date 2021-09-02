@@ -23,8 +23,33 @@ int main() {
     for (const auto& v : standartMap)
         mapWithReservingAllocator[v.first] = v.second;
 
+    //--
+    auto itFind = mapWithReservingAllocator.find(4);
+    if (itFind != mapWithReservingAllocator.end()) {
+        std::cout << "Delete element from map..." << std::endl;
+        mapWithReservingAllocator.erase(itFind);
+        std::cout << "Insert new element to map..." << std::endl;
+        mapWithReservingAllocator.insert(std::make_pair(11, 111));
+    }
+
+    for (auto i = 22; i < 31; ++i)
+        mapWithReservingAllocator.insert(std::make_pair(i, i*10));
+    //--
+
     for (const auto& v : mapWithReservingAllocator)
         std::cout << v.first << " " << v.second << std::endl;
+
+    mapWithReservingAllocator.clear();
+
+    /*auto ar = std::vector<int, reserving_allocator<int, 10>>{};
+    ar.reserve(5);
+    for (auto i = 0; i < 12; ++i) {
+        ar.emplace_back(i);
+    }
+
+    for (auto v : ar) {
+        std::cout << v << std::endl;
+    }*/
 
     return 0;
 }
