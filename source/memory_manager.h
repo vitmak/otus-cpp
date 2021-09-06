@@ -128,7 +128,7 @@ public:
 	MemoryManager() = default;
 	~MemoryManager() {
 		for (auto& v : m_memoryBlocks) {
-
+			//TODO: add free memory
 		}
 	}
 

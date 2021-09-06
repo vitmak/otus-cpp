@@ -35,6 +35,20 @@ int main() {
         std::cout << *it << std::endl;
     }
 
+    // Tests with allocator
+    //8.
+    List<int, std::allocator<int>> arrWithAlloc1;
+    arrWithAlloc1.push_back(1);
+    //9.
+    List<int, reserving_allocator<int, 10>> arrWithResAlloc;
+    for (auto i = 9; i < 18; ++i) {
+        arrWithResAlloc.push_back(i);
+    }
+
+    for (const auto& v : arrWithResAlloc) {
+        std::cout << v << std::endl;
+    }
+
 
     //
     ////for (List<int>::Iterator iter = myList.begin(); iter != myList.end(); ++iter) {
