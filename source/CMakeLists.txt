@@ -11,6 +11,6 @@ set_target_properties(allocator_traits PROPERTIES CXX_STANDARD 14 CXX_STANDARD_R
 add_executable(polymorphism polymorphism.cpp)
 set_target_properties(polymorphism PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 
-add_executable(allocator reserving_allocator.h memory_manager.h main.cpp)
+add_executable(allocator reserving_allocator.h memory_manager.h custom_list.h main.cpp)
 set_target_properties(allocator PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 
