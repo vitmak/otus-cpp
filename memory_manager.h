@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include <iostream>
+#include <cstdio>
+#include <cstdlib>
 #include <vector>
 #include <forward_list>
 
@@ -13,8 +14,6 @@ template<typename T>
 class MemoryArea {
 public:
 	MemoryArea(T* start) : m_start(start) {
-		bool isFree = m_state == MemoryStates::eFree;
-		std::cout << m_start << " state: " << isFree << std::endl;
 	}
 
 	/*bool operator== (const MemoryArea<T>& rhs) const {
@@ -51,22 +50,12 @@ template <typename T, size_t N>
 class MemoryBlock {
 public:
 	MemoryBlock(T* start) : m_start(start) {
-		std::cout << "Create memory block with start: " << m_start << std::endl;
 		m_memoryAreas.reserve(m_elementsCount);
 		for (size_t i = 0; i < m_elementsCount; ++i) {
 			m_memoryAreas.emplace_back(MemoryArea<T>{start + i});
 		}
 	}
 
-	//--
-	void ShowBlockStates() const {
-		for (const auto& v : m_memoryAreas) {
-			bool isFree = v.GetState() == MemoryStates::eFree;
-			std::cout << v.GetStart() << " state: " << isFree << std::endl;
-		}
-	}
-	//--
-	
 	bool isContain(const T* element) const {
 		return m_start <= element && element < (m_start + m_elementsCount);
 	}
@@ -137,20 +126,15 @@ public:
 	}
 
 	T* GetFreeMemory(size_t elementsCount) {
-		std::cout << "MemoryManager::GetFreeMemory" << std::endl;
-		
 		T* startAddr = nullptr;
 		for (const auto& v : m_memoryBlocks) {
-			v.ShowBlockStates();
 			startAddr = v.GetFreeMemory(elementsCount);
 			if (nullptr != startAddr) {
-				std::cout << "Find free memory in the current block: " << startAddr << std::endl;
 				break;
 			}
 		}
 
 		if (nullptr == startAddr) {
-			std::cout << "Create new memory block!" << std::endl;
 			startAddr = reinterpret_cast<T*> (std::malloc(N * sizeof(T)));
 			if (nullptr == startAddr)
 				throw std::bad_alloc();

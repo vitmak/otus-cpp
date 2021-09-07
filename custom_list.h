@@ -58,15 +58,12 @@ public:
 	void push_back(const T& value) {
 		auto node = m_allocator.allocate(1);
 		m_allocator.construct(node, value, nullptr, m_back);
-		//Node* node = new (memory) Node{ value, nullptr, m_back };
-
+		
 		if (nullptr == m_front)
 			m_front = node;
-		//start
-		// Maybe cut to Node::Node next two lines?
+		
 		if (nullptr != m_back)
 			m_back->m_next = node;
-		//end
 		
 		m_back = node;
 	}
