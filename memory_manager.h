@@ -53,7 +53,7 @@ public:
 	MemoryBlock(T* start) : m_start(start) {
 		std::cout << "Create memory block with start: " << m_start << std::endl;
 		m_memoryAreas.reserve(m_elementsCount);
-		for (auto i = 0; i < m_elementsCount; ++i) {
+		for (size_t i = 0; i < m_elementsCount; ++i) {
 			m_memoryAreas.emplace_back(MemoryArea<T>{start + i});
 		}
 	}
@@ -73,7 +73,7 @@ public:
 
 	T* GetFreeMemory(size_t elementsCount) const {
 		for (auto it = m_memoryAreas.cbegin(); it != m_memoryAreas.cend(); ++it) {
-			auto sequence = 0;
+			size_t sequence = 0;
 			for (auto iter = it; iter != m_memoryAreas.cend(); ++iter) {
 				if (iter->GetState() == MemoryStates::eFree) {
 					if (++sequence == elementsCount)

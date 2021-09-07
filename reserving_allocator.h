@@ -48,7 +48,7 @@ struct reserving_allocator {
     void construct(U* p, Args &&...args) {
         std::cout << __PRETTY_FUNCTION__ << std::endl;
         new(p) U(std::forward<Args>(args)...);
-    };
+    }
 
     template<typename U>
     void destroy(U* p) {
