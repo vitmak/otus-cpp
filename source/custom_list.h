@@ -4,6 +4,7 @@
 #include <exception>
 
 
+
 template<typename T, typename Allocator = std::allocator<T>>
 class List {
 private:
@@ -46,12 +47,18 @@ public:
 	
 	List() = default;
 	~List() {
+		auto it = begin();
+		while (it != end()) {
+			auto current = it;
+			++it;
+			m_allocator.destroy(current.m_node);
+			m_allocator.deallocate(current.m_node, 1);
+		}
 	}
 
 	void push_back(const T& value) {
-		Allocator::rebind<Node>::other allocator;
-		auto node = allocator.allocate(1);
-		allocator.construct(node, value, nullptr, m_back);
+		auto node = m_allocator.allocate(1);
+		m_allocator.construct(node, value, nullptr, m_back);
 		//Node* node = new (memory) Node{ value, nullptr, m_back };
 
 		if (nullptr == m_front)
@@ -80,4 +87,6 @@ private:
 	Node* m_back = nullptr;
 
 	iterator m_iter;
+
+	typename Allocator::template rebind<Node>::other m_allocator;
 };

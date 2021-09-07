@@ -7,47 +7,54 @@
 
 int main() {
 
-    //std::list<int>stdList;
-    //auto it = stdList.begin();
-    //std::cout << *it << std::endl;
-    List<int> myList;
-    for (auto i = 0; i < 5; ++i) {
-        myList.push_back(i);
-    }
+    ////std::list<int>stdList;
+    ////auto it = stdList.begin();
+    ////std::cout << *it << std::endl;
+    //List<int> myList;
+    //for (auto i = 0; i < 5; ++i) {
+    //    myList.push_back(i);
+    //}
 
-    //1. 
-    List<int>::iterator iter;
-    //2. 
-    List<int>::iterator iter2 = myList.begin();
-    //3.
-    std::cout << *iter2 << std::endl;
-    //4.
-    *iter2 = 9;
-    std::cout << *iter2 << std::endl;
+    ////1. 
+    //List<int>::iterator iter;
+    ////2. 
+    //List<int>::iterator iter2 = myList.begin();
+    ////3.
+    //std::cout << *iter2 << std::endl;
+    ////4.
+    //*iter2 = 9;
+    //std::cout << *iter2 << std::endl;
 
-    //5.
-    ++iter2;
-    std::cout << *iter2 << std::endl;
+    ////5.
+    //++iter2;
+    //std::cout << *iter2 << std::endl;
 
-    //7.
-    std::cout << "Show all container ..." << std::endl;
-    for (auto it = myList.begin(); it != myList.end(); ++it) {
-        std::cout << *it << std::endl;
-    }
+    ////7.
+    //std::cout << "Show all container ..." << std::endl;
+    //for (auto it = myList.begin(); it != myList.end(); ++it) {
+    //    std::cout << *it << std::endl;
+    //}
 
-    // Tests with allocator
-    //8.
-    List<int, std::allocator<int>> arrWithAlloc1;
-    arrWithAlloc1.push_back(1);
-    //9.
-    List<int, reserving_allocator<int, 10>> arrWithResAlloc;
-    for (auto i = 9; i < 18; ++i) {
-        arrWithResAlloc.push_back(i);
-    }
+    //// Tests with allocator
+    ////8.
+    //List<int, std::allocator<int>> arrWithAlloc1;
+    //arrWithAlloc1.push_back(1);
+    //arrWithAlloc1.push_back(2);
+    ////9.
+    //List<int, reserving_allocator<int, 10>> arrWithResAlloc;
+    //for (auto i = 9; i < 18; ++i) {
+    //    arrWithResAlloc.push_back(i);
+    //}
 
-    for (const auto& v : arrWithResAlloc) {
-        std::cout << v << std::endl;
-    }
+    //List<int, reserving_allocator<int, 10>> arrWithResAlloc2;
+    //arrWithResAlloc2.push_back(11);
+
+    List<int> arr;
+    arr.push_back(111);
+
+    //for (const auto& v : arrWithResAlloc) {
+    //    std::cout << v << std::endl;
+    //}
 
 
     //
