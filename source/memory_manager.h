@@ -102,6 +102,10 @@ public:
 			}
 		}
 	}
+
+	T* GetStartMemory() const {
+		return m_start;
+	}
 	
 private:
 	T* m_start;
@@ -128,7 +132,7 @@ public:
 	MemoryManager() = default;
 	~MemoryManager() {
 		for (auto& v : m_memoryBlocks) {
-			//TODO: add free memory
+			free(v.GetStartMemory());
 		}
 	}
 
