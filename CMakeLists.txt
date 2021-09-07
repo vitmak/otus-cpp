@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(06.allocator)
+project(allocator)
 
 add_executable(allocator reserving_allocator.h memory_manager.h custom_list.h main.cpp)
 set_target_properties(allocator PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
