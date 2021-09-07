@@ -47,12 +47,11 @@ public:
 	
 	List() = default;
 	~List() {
-		auto it = begin();
-		while (it != end()) {
-			auto current = it;
-			++it;
-			m_allocator.destroy(current.m_node);
-			m_allocator.deallocate(current.m_node, 1);
+		while (nullptr != m_front) {
+			Node* front = m_front;
+			m_front = front->m_next;
+			m_allocator.destroy(front);
+			m_allocator.deallocate(front, 1);
 		}
 	}
 
