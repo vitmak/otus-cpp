@@ -16,7 +16,12 @@
 # Mono auto generated files
 mono_crash.*
 
+README.md
+
+.gitignore
+
 # Build results
+[Bb]uild/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
