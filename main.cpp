@@ -13,7 +13,7 @@
 // print_ip  - function for integral types
 //
 template <typename T> 
-typename std::enable_if_t<std::is_integral_v<T>> print_ip(T&& value) {
+typename std::enable_if<std::is_integral<T>::value>::type print_ip(T&& value) {
 	const auto ByteSize = 8;
 	
 	std::bitset<sizeof(T) * ByteSize> bytes = value;
@@ -42,14 +42,14 @@ typename std::enable_if_t<std::is_integral_v<T>> print_ip(T&& value) {
 // print_ip  - function for string type
 //
 template <typename S>
-typename std::enable_if_t<std::is_same_v<S, std::string>> print_ip(S&& str) {
+typename std::enable_if<std::is_same<S, std::string>::value>::type print_ip(S&& str) {
 	std::cout << str << std::endl;
 }
 
 //
 // print_ip  - function for containers type
 //
-template <typename T, typename Allocator = std::allocator<T::value_type>
+template <typename T, typename Allocator = std::allocator<typename T::value_type>
 	/*typename T::value_type,
 	typename T::allocator_type,
 	typename T::size_type,
@@ -68,7 +68,7 @@ template <typename T, typename Allocator = std::allocator<T::value_type>
 	decltype(std::declval<T>().cbegin()),
 	decltype(std::declval<T>().cend())*/
 >
-typename std::enable_if_t<!std::is_same_v<T, std::string>> print_ip(const T& container) {
+typename std::enable_if<!std::is_same<T, std::string>::value>::type print_ip(const T& container) {
 	for (auto it = container.cbegin(); it != container.cend(); ++it) {
 		if (it != container.cbegin())
 			std::cout << ".";
@@ -81,7 +81,7 @@ int main() {
 	print_ip(char{-1});
 	print_ip(short{ 0 });
 	print_ip(int{ 2130706433 });
-	print_ip(long long{ 8875824491850138409 });
+	print_ip(long ( 8875824491850138409 ));
 	
 	print_ip(std::string{"trololo"});
 	
