@@ -32,6 +32,8 @@ struct reserving_allocator {
             throw std::bad_alloc();
 
         auto addr = m_memoryMng.GetFreeMemory(n);
+        if (nullptr == addr)
+            throw std::bad_alloc();
         return addr;
     }
 
