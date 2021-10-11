@@ -1,17 +1,18 @@
 #include "Model.h"
+#include "Controller.h"
 
-void Point::Assept(ShapeVisitor* visitorPtr) {
+void Point::Assept(IShapeVisitor* visitorPtr) {
 	visitorPtr->VisitPoint(this);
 }
 
-void Line::Assept(ShapeVisitor* visitorPtr) {
+void Line::Assept(IShapeVisitor* visitorPtr) {
 	visitorPtr->VisitLine(this);
 }
 
-void Circle::Assept(ShapeVisitor* visitorPtr) {
+void Circle::Assept(IShapeVisitor* visitorPtr) {
 	visitorPtr->VisitCircle(this);
 }
 
-void Polygon::Assept(ShapeVisitor* visitorPtr) {
+void Polygon::Assept(IShapeVisitor* visitorPtr) {
 	visitorPtr->VisitPolygon(this);
 }

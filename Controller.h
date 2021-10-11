@@ -1,51 +1,52 @@
 #pragma once
 
 #include "Model.h"
+#include "string"
 
 
-class std::string;
 class Document;
 class Canvas;
 
 enum class PrimitiveTypes {
-	eLine = 0,
-	eRectangle,
-	eCircle
-};
-
-class IShapeVisitor {
-public:
-	virtual void VisitPoint(Primitive* shapePtr) = 0;
-	virtual void VisitLine(Primitive* shapePtr) = 0;
-	virtual void VisitCircle(Primitive* shapePtr) = 0;
-	virtual void VisitPolygon(Primitive* shapePtr) = 0;
+	ePoint = 0,
+	eLine,
+	eCircle,
+	ePolygon
 };
 
 class DrawingVisitor : public IShapeVisitor {
 public:
 	DrawingVisitor() = default;
 
-	virtual void VisitPoint(Primitive* shapePtr) = 0;
-	virtual void VisitLine(Primitive* shapePtr) = 0;
-	virtual void VisitCircle(Primitive* shapePtr) = 0;
-	virtual void VisitPolygon(Primitive* shapePtr) = 0;
+	void VisitPoint(Primitive* shapePtr) override {
+		// Draw point
+	}
+	void VisitLine(Primitive* shapePtr) override {
+		// Draw line
+	}
+	void VisitCircle(Primitive* shapePtr) override {
+		// Draw circle
+	}
+	void VisitPolygon(Primitive* shapePtr) override {
+		// Draw polygon
+	}
 
 private:
-	//Canvas* m_canvasPtr;
-	Canvas m_canvas;
+	Canvas* m_canvasPtr;
 };
 
 class GraphicEditorApp {
 public:
-	GraphicEditorApp();
-	~GraphicEditorApp();
+	GraphicEditorApp() = default;
+	//~GraphicEditorApp();
+	
 	void CreateNewDocument();
 
-	void ImportDocument(const std::string& path);
-	void ExportDocument(const std::string& path);
+	void ImportDocument(const std::string& filePath);
+	void ExportDocument(const std::string& filePath);
 
-	void CreatePrimitive(const EPrimitiveTypes::eCircle, int primitiveID);
-	void DeletePrimitive(int primitiveID);
+	void CreatePrimitive(PrimitiveTypes primitiveType, int primitiveID);
+	void DeletePrimitive(Primitive* primitivePtr);
 
 	Primitive* SelectPrimitive(int primitiveID) const;
 
@@ -56,5 +57,5 @@ private:
 	void SetShapeParam(const std::vector<Point>& points);
 
 	Document* m_activeDoc = nullptr;
-	DrawingVisitor m_drawingVisitor;
+	DrawingVisitor* m_drawingVisitor;
 };

@@ -11,6 +11,10 @@ private:
 };
 
 
+class EditorFrame {
+	
+};
+
 class ToolbarView {
 public:
 	ToolbarView();

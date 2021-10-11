@@ -3,43 +3,43 @@
 #include <vector>
 #include <string>
 
-class ShapeVisitor;
+class IShapeVisitor;
 
-class Shape {
+class Primitive {
 public:
-	virtual void Assept(ShapeVisitor * VisitorPtr) = 0;
+	virtual void Assept(IShapeVisitor* VisitorPtr) = 0;
 };
 
-class Point : public Shape {
+class Point : public Primitive {
 public:
-	void Assept(ShapeVisitor* VisitorPtr) override;
+	void Assept(IShapeVisitor* VisitorPtr) override;
 
 private:
 	int m_x;
 	int m_y;
 };
 
-class Line : public Shape {
+class Line : public Primitive {
 public:
-	void Assept(ShapeVisitor* VisitorPtr) override;
+	void Assept(IShapeVisitor* VisitorPtr) override;
 
 private:
 	Point m_start;
 	Point m_end;
 };
 
-class Circle : public Shape {
+class Circle : public Primitive {
 public:
-	void Assept(ShapeVisitor* VisitorPtr) override;
+	void Assept(IShapeVisitor* VisitorPtr) override;
 
 private:
 	Point m_center;
 	double m_radius;
 };
 
-class Polygon : public Shape {
+class Polygon : public Primitive {
 public:
-	void Assept(ShapeVisitor* VisitorPtr) override;
+	void Assept(IShapeVisitor* VisitorPtr) override;
 
 private:
 	std::vector<Point> m_points;
@@ -56,11 +56,20 @@ public:
 
 class Document {
 public:
-	Document(const std::string& filePath) = default;
-	void AddPrimitive(Shape *shapePtr);
-	void DeletePrimitive(Shape* shapePtr);
+	Document() = default;
+
+	void AddPrimitive(Primitive* shapePtr) {}
+	void DeletePrimitive(Primitive* shapePtr);
+
+	void VisitAllPrimitives() const;
+
+
+	bool IsModified() const {
+		return m_isModified;
+	}
+
 private:
 	std::string m_filePath;
 	bool m_isModified;
-	Shape* m_pActiveShape = nullptr;
+	Primitive* m_pActiveShape = nullptr;
 };
