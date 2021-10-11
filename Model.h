@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <string>
+#include <forward_list>
+
 
 class IShapeVisitor;
 
@@ -58,18 +60,35 @@ class Document {
 public:
 	Document() = default;
 
-	void AddPrimitive(Primitive* shapePtr) {}
-	void DeletePrimitive(Primitive* shapePtr);
+	void AddPrimitive(Primitive* shapePtr) {
+		// ...
+		m_pActiveShape = shapePtr;
+		m_isModified = true;
+	}
+	void DeletePrimitive(Primitive* shapePtr) {
+		// ...
+		m_pActiveShape = nullptr;
+		m_isModified = true;
+	}
 
-	void VisitAllPrimitives() const;
-
+	void VisitAllPrimitives(IShapeVisitor* visitor) const {
+		for (const auto v : m_shapes) {
+			v->Assept(visitor);
+		}
+	}
 
 	bool IsModified() const {
 		return m_isModified;
+	}
+
+	Primitive* GetActiveShape() const {
+		return m_pActiveShape;
 	}
 
 private:
 	std::string m_filePath;
 	bool m_isModified;
 	Primitive* m_pActiveShape = nullptr;
+
+	std::forward_list<Primitive*> m_shapes;
 };

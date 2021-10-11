@@ -38,7 +38,6 @@ private:
 class GraphicEditorApp {
 public:
 	GraphicEditorApp() = default;
-	//~GraphicEditorApp();
 	
 	void CreateNewDocument();
 
@@ -58,4 +57,5 @@ private:
 
 	Document* m_activeDoc = nullptr;
 	DrawingVisitor* m_drawingVisitor;
+	
 };

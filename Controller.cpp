@@ -4,17 +4,20 @@
 void GraphicEditorApp::CreateNewDocument() {
 	if (m_activeDoc && m_activeDoc->IsModified()) {
 		// Вызвать диалог с вопросом, сохранить измененения или нет ...
-
 	}
 	m_activeDoc = new Document{};
 }
 
 void GraphicEditorApp::ImportDocument(const std::string& filePath) {
+	if (m_activeDoc && m_activeDoc->IsModified()) {
+		// Вызвать диалог с вопросом, сохранить измененения или нет ...
+	}
 
+	// ...
+	m_activeDoc->VisitAllPrimitives();
 }
 
 void GraphicEditorApp::ExportDocument(const std::string& filePath) {
-
 }
 
 void GraphicEditorApp::CreatePrimitive(PrimitiveTypes primitiveType, int primitiveID) {
@@ -48,7 +51,11 @@ void GraphicEditorApp::CreatePrimitive(PrimitiveTypes primitiveType, int primiti
 }
 
 void GraphicEditorApp::DeletePrimitive(Primitive* primitivePtr) {
+	if (m_activeDoc != nullptr && m_activeDoc->GetActiveShape() != nullptr) {
+		m_activeDoc->DeletePrimitive();
 
+		m_activeDoc->VisitAllPrimitives();
+	}
 }
 
 Primitive* GraphicEditorApp::SelectPrimitive(int primitiveID) const {
