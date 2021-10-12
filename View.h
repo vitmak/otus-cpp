@@ -9,36 +9,35 @@ enum class PrimitiveTypes {
 	ePolygon
 };
 
-class Canvas {
-public:
-	Canvas();
+//class Canvas {
+//public:
+//	Canvas();
+//
+//private:
+//
+//};
+//
+//
+//class EditorFrame {
+//	
+//};
+//
+//class Toolbar {
+//public:
+//	Toolbar();
+//private:
+//
+//};
+//
+//class Control {
+//};
+//
+//class Menu : public Control {
+//public:
+//	Menu() = default;
+//	void 
+//};
 
-private:
-
-};
-
-
-class EditorFrame {
-	
-};
-
-class Toolbar {
-public:
-	ToolbarView();
-private:
-
-};
-
-class Control {
-};
-
-class Menu : public Control {
-public:
-	Menu() = default;
-	void 
-};
-
-class 
 
 //class ColorSettings {
 //public:

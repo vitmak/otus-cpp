@@ -1,15 +1,14 @@
 #pragma once
 
 #include "Model.h"
-//#include "View.h"
+#include "View.h"
 #include "string"
 
 
 class Document;
 class Canvas;
 
-
-
+// 
 class DrawingVisitor : public IShapeVisitor {
 public:
 	DrawingVisitor() = default;
@@ -31,12 +30,15 @@ private:
 	Canvas* m_canvasPtr;
 };
 
+// The class contains shapes that contain specified point. Used to select shapes.
 class SelectingVisitor : public IShapeVisitor {
 public:
-	SelectingVisitor() : m_x{x}, m_y{y} {}
+	SelectingVisitor(int x, int y) : m_x{x}, m_y{y} {}
 
-	std::forward_list<Primitive*> GetSelectedShapes();
-
+	std::forward_list<Primitive*> GetSelectedShapes() const {
+		//...
+		return m_selectedShapes;
+	}
 
 	void VisitPoint(Primitive* shapePtr) override {
 		// Check if the shape contains a coordinate, then add the shape to the list 'm_selectedShapes'.

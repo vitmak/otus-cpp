@@ -2,7 +2,7 @@
 
 
 GraphicEditorApp::GraphicEditorApp() {
-	m_drawingVisitor = 
+	m_drawingVisitor = new DrawingVisitor{};
 }
 
 void GraphicEditorApp::CreateNewDocument() {
@@ -66,7 +66,14 @@ void GraphicEditorApp::DeletePrimitive() {
 
 void GraphicEditorApp::SelectPrimitive(int x, int y) const {
 	
-	//auto shapes = m_activeDoc->GetShapes(x, y);
+	SelectingVisitor selectingVisitor(x, y);
+	m_activeDoc->VisitAllPrimitives(&selectingVisitor);
+	auto shapes = selectingVisitor.GetSelectedShapes();
+	// ...
+	Primitive* selectedShape = nullptr;
+	// Select a specific shape from the 'shapes' list by any criterion.
+
+	m_activeDoc->SetActiveShape(selectedShape);
 }
 
 void GraphicEditorApp::SetShapeParam(const std::vector<Point>& points) {

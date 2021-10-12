@@ -91,10 +91,14 @@ public:
 		return m_pActiveShape;
 	}
 
+	void SetActiveShape(Primitive* primitivePtr){	
+	    //...
+	}
+
 private:
 	std::string m_filePath;
-	bool m_isModified;
-	Primitive* m_pActiveShape = nullptr;
+	bool m_isModified = false;
 
+	Primitive* m_pActiveShape = nullptr;
 	std::forward_list<Primitive*> m_shapes;
 };
