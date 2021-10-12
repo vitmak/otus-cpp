@@ -1,23 +1,29 @@
 #include "Controller.h"
 
 
+GraphicEditorApp::GraphicEditorApp() {
+	m_drawingVisitor = 
+}
+
 void GraphicEditorApp::CreateNewDocument() {
 	if (m_activeDoc && m_activeDoc->IsModified()) {
-		// Вызвать диалог с вопросом, сохранить измененения или нет ...
+		// TODO: Save old document?
 	}
 	m_activeDoc = new Document{};
 }
 
 void GraphicEditorApp::ImportDocument(const std::string& filePath) {
 	if (m_activeDoc && m_activeDoc->IsModified()) {
-		// Вызвать диалог с вопросом, сохранить измененения или нет ...
+		// TODO: Save old document?
 	}
 
+	// Set new document
 	// ...
-	m_activeDoc->VisitAllPrimitives();
+	m_activeDoc->VisitAllPrimitives(m_drawingVisitor);
 }
 
 void GraphicEditorApp::ExportDocument(const std::string& filePath) {
+	// Save the document
 }
 
 void GraphicEditorApp::CreatePrimitive(PrimitiveTypes primitiveType, int primitiveID) {
@@ -41,7 +47,7 @@ void GraphicEditorApp::CreatePrimitive(PrimitiveTypes primitiveType, int primiti
 	
 	default:
 		// Unknown shape
-		// use throw ("Unknown shape");
+		// ...
 		break;
 	}
 
@@ -50,21 +56,18 @@ void GraphicEditorApp::CreatePrimitive(PrimitiveTypes primitiveType, int primiti
 	shapePtr->Assept(m_drawingVisitor);
 }
 
-void GraphicEditorApp::DeletePrimitive(Primitive* primitivePtr) {
-	if (m_activeDoc != nullptr && m_activeDoc->GetActiveShape() != nullptr) {
-		m_activeDoc->DeletePrimitive();
-
-		m_activeDoc->VisitAllPrimitives();
-	}
+void GraphicEditorApp::DeletePrimitive() {
+	if (m_activeDoc == nullptr || m_activeDoc->GetActiveShape() == nullptr)
+		return;
+	
+	m_activeDoc->DeleteActivePrimitive();
+	m_activeDoc->VisitAllPrimitives(m_drawingVisitor);
 }
 
-Primitive* GraphicEditorApp::SelectPrimitive(int primitiveID) const {
-	// ...
-	return nullptr;
+void GraphicEditorApp::SelectPrimitive(int x, int y) const {
+	
+	//auto shapes = m_activeDoc->GetShapes(x, y);
 }
-
-//void SaveAs(); // convert document to XML / JSON format
-//void PrintDocument() const;
 
 void GraphicEditorApp::SetShapeParam(const std::vector<Point>& points) {
 

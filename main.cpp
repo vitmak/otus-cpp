@@ -1,6 +1,7 @@
 ﻿#include "Controller.h"
 
 
+
 int main() {
 	GraphicEditorApp graphicEdtitorApp;
 
@@ -10,8 +11,9 @@ int main() {
 
 	graphicEdtitorApp.ExportDocument("BusinessCard");
 
-	auto primitivePtr = graphicEdtitorApp.SelectPrimitive(1/*Select the line*/);
-	graphicEdtitorApp.DeletePrimitive(primitivePtr);
+	// TODO: Select shape with mouse click
+	//auto primitivePtr = graphicEdtitorApp.SelectPrimitive(1/*Select the line*/);
+	graphicEdtitorApp.DeletePrimitive();
 
 	graphicEdtitorApp.ExportDocument("BusinessCard2");
 

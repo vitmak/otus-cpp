@@ -1,18 +1,14 @@
 #pragma once
 
 #include "Model.h"
+//#include "View.h"
 #include "string"
 
 
 class Document;
 class Canvas;
 
-enum class PrimitiveTypes {
-	ePoint = 0,
-	eLine,
-	eCircle,
-	ePolygon
-};
+
 
 class DrawingVisitor : public IShapeVisitor {
 public:
@@ -35,9 +31,37 @@ private:
 	Canvas* m_canvasPtr;
 };
 
+class SelectingVisitor : public IShapeVisitor {
+public:
+	SelectingVisitor() : m_x{x}, m_y{y} {}
+
+	std::forward_list<Primitive*> GetSelectedShapes();
+
+
+	void VisitPoint(Primitive* shapePtr) override {
+		// Check if the shape contains a coordinate, then add the shape to the list 'm_selectedShapes'.
+	}
+	void VisitLine(Primitive* shapePtr) override {
+		// Check if the shape contains a coordinate, then add the shape to the list 'm_selectedShapes'.
+	}
+	void VisitCircle(Primitive* shapePtr) override {
+		// Check if the shape contains a coordinate, then add the shape to the list 'm_selectedShapes'.
+	}
+	void VisitPolygon(Primitive* shapePtr) override {
+		// Check if the shape contains a coordinate, then add the shape to the list 'm_selectedShapes'.
+	}
+
+private:
+	int m_x;
+	int m_y;
+
+	std::forward_list<Primitive*> m_selectedShapes;
+};
+
+
 class GraphicEditorApp {
 public:
-	GraphicEditorApp() = default;
+	GraphicEditorApp();
 	
 	void CreateNewDocument();
 
@@ -45,12 +69,9 @@ public:
 	void ExportDocument(const std::string& filePath);
 
 	void CreatePrimitive(PrimitiveTypes primitiveType, int primitiveID);
-	void DeletePrimitive(Primitive* primitivePtr);
+	void DeletePrimitive();
 
-	Primitive* SelectPrimitive(int primitiveID) const;
-
-	//void SaveAs(); // convert document to XML / JSON format
-	//void PrintDocument() const;
+	void SelectPrimitive(int x, int y) const;
 
 private:
 	void SetShapeParam(const std::vector<Point>& points);

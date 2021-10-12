@@ -61,11 +61,17 @@ public:
 	Document() = default;
 
 	void AddPrimitive(Primitive* shapePtr) {
+		m_shapes.push_front(shapePtr);
 		// ...
 		m_pActiveShape = shapePtr;
 		m_isModified = true;
 	}
-	void DeletePrimitive(Primitive* shapePtr) {
+
+	void DeleteActivePrimitive() {
+		if (m_pActiveShape == nullptr)
+			return;
+		
+		// Delete the active shape from 'm_shapes'
 		// ...
 		m_pActiveShape = nullptr;
 		m_isModified = true;
