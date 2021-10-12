@@ -70,7 +70,7 @@ public:
 	void ImportDocument(const std::string& filePath);
 	void ExportDocument(const std::string& filePath);
 
-	void CreatePrimitive(PrimitiveTypes primitiveType, int primitiveID);
+	void CreatePrimitive(PrimitiveTypes primitiveType);
 	void DeletePrimitive();
 
 	void SelectPrimitive(int x, int y) const;

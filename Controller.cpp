@@ -26,7 +26,7 @@ void GraphicEditorApp::ExportDocument(const std::string& filePath) {
 	// Save the document
 }
 
-void GraphicEditorApp::CreatePrimitive(PrimitiveTypes primitiveType, int primitiveID) {
+void GraphicEditorApp::CreatePrimitive(PrimitiveTypes primitiveType) {
 	Primitive* shapePtr = nullptr;
 	switch (primitiveType) {
 	case PrimitiveTypes::ePoint:
