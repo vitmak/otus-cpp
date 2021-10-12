@@ -6,43 +6,36 @@ enum class PrimitiveTypes {
 	ePoint = 0,
 	eLine,
 	eCircle,
-	ePolygon
+	ePolygon,
+	eEmpty
 };
 
-//class Canvas {
-//public:
-//	Canvas();
-//
-//private:
-//
-//};
-//
-//
-//class EditorFrame {
-//	
-//};
-//
-//class Toolbar {
-//public:
-//	Toolbar();
-//private:
-//
-//};
-//
-//class Control {
-//};
-//
-//class Menu : public Control {
-//public:
-//	Menu() = default;
-//	void 
-//};
 
+class Canvas {
+public:
+	Canvas() = default;
+	void OnMouseButtonClick(){}
+};
 
-//class ColorSettings {
-//public:
-//	Toolbar();
-//private:
 //
-//};
+class Toolbar {
+public:
+	Toolbar() = default;
 
+	void OnClickPrimitiveForm(PrimitiveTypes primitiveType) {
+		// Activate creating primitive mode 
+	}
+
+	void OnClickColorPalette() {
+		// Set color settings
+	}
+
+	// ...
+
+private:
+	PrimitiveTypes m_activeShapeType = PrimitiveTypes::eEmpty;
+};
+
+// TODO: add next classes:
+// - class MenuItem{};
+// - class Menu {};

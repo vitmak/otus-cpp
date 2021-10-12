@@ -6,7 +6,6 @@
 
 
 class Document;
-class Canvas;
 
 // 
 class DrawingVisitor : public IShapeVisitor {
@@ -81,4 +80,6 @@ private:
 	Document* m_activeDoc = nullptr;
 	DrawingVisitor* m_drawingVisitor;
 	
+	Toolbar* m_pToolbar;
+
 };

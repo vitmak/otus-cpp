@@ -1,7 +1,6 @@
 ﻿#include "Controller.h"
 
 
-
 int main() {
 	GraphicEditorApp graphicEdtitorApp;
 

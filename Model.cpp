@@ -1,5 +1,5 @@
 #include "Model.h"
-#include "Controller.h"
+
 
 void Point::Assept(IShapeVisitor* visitorPtr) {
 	visitorPtr->VisitPoint(this);
