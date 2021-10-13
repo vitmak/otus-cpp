@@ -77,5 +77,5 @@ void GraphicEditorApp::SelectPrimitive(int x, int y) const {
 }
 
 void GraphicEditorApp::SetShapeParam(const std::vector<Point>& points) {
-	m_pToolbar->GetConfiguration();
+	//m_pToolbar->GetConfiguration();
 }
