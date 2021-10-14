@@ -7,7 +7,7 @@
 
 class DrawingVisitor : public IShapeVisitor {
 public:
-	DrawingVisitor() = default;
+	DrawingVisitor(Canvas* canvas) : m_canvasPtr{ canvas } {}
 
 	void VisitPoint(Primitive* shapePtr) override {
 		// Draw point

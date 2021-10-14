@@ -2,38 +2,6 @@
 #include "View.h"
 
 
-//void OnCreateNewDocument(GraphicEditorApp& graphicEditor) {
-//	graphicEditor.CreateNewDocument();
-//}
-//
-//void OnImportDocument(GraphicEditorApp& graphicEditor) {
-//	FilePathDlg dlg;
-//
-//	// Get file path from dialog
-//	std::string path;
-//	graphicEditor.ImportDocument(path);
-//}
-//
-//void OnExportDocument(GraphicEditorApp& graphicEditor) {
-//	FilePathDlg dlg;
-//
-//	// Get file path from dialog
-//	std::string path;
-//	graphicEditor.ExportDocument(path);
-//}
-//
-//void OnCreatePrimitive(GraphicEditorApp& graphicEditor) {
-//	PrimitiveDetailsDlg dlg;
-//
-//	// ...
-//	auto selectedShapeType = PrimitiveTypes::eLine;
-//	graphicEditor.CreatePrimitive(selectedShapeType);
-//}
-//
-//void OnDeletePrimitive(GraphicEditorApp& graphicEditor) {
-//	graphicEditor.DeletePrimitive();
-//}
-
 int main() {
 	GraphicEditorApp graphicEditor;
 
@@ -69,6 +37,10 @@ int main() {
 		graphicEditor.DeletePrimitive();
 	};
 
+	auto OnCanvasClick = [&graphicEditor](int x, int y) {
+		graphicEditor.SelectPrimitive(x, y);
+	};
+
 
 	auto menuBar = graphicEditor.GetFrame().GetMenu();
 	menuBar.SetCommand("Create New", OnCreateNewDocument);
@@ -85,6 +57,7 @@ int main() {
 	
 	menuBar.OnClick("Select primitives");
 	auto canvas = graphicEditor.GetFrame().GetCanvas();
+	canvas.SetCommand(OnCanvasClick);
 	canvas.OnMouseClick(100, 100);
 
 	menuBar.OnClick("Delete primitive");

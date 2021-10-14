@@ -60,7 +60,7 @@ private:
 		std::function<void()> m_command;
 	};
 
-	std::list<std::string, MenuItem> m_menuItems;
+	std::list<MenuItem> m_menuItems;
 };
 
 class GraphicEditorApp;
@@ -68,7 +68,14 @@ class Wnd {};
 class Canvas : public Wnd {
 public:
 	Canvas() = default;
-	void OnMouseClick(int x, int y);
+	void OnMouseClick(int x, int y){
+		m_command(x, y);
+	}
+	void SetCommand(const std::function<void(int, int)>& func) {
+		m_command = func;
+	}
+private:
+	std::function<void(int, int)> m_command;
 };
 
 class EditorFrame {

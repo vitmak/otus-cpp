@@ -2,7 +2,7 @@
 
 
 GraphicEditorApp::GraphicEditorApp() {
-	m_drawingVisitor = new DrawingVisitor{};
+	m_drawingVisitor = new DrawingVisitor{ &m_EditorFrame.GetCanvas() };
 }
 
 void GraphicEditorApp::CreateNewDocument() {
