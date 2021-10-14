@@ -2,28 +2,29 @@
 
 #include "Model.h"
 #include "View.h"
-#include "string"
+#include <string>
+#include <memory>
 
 
 class DrawingVisitor : public IShapeVisitor {
 public:
-	DrawingVisitor(Canvas* canvas) : m_canvasPtr{ canvas } {}
+	DrawingVisitor(std::shared_ptr<Canvas> canvas) : m_canvasPtr{ canvas } {}
 
-	void VisitPoint(Primitive* shapePtr) override {
+	void VisitPoint(const Point& point) override {
 		// Draw point
 	}
-	void VisitLine(Primitive* shapePtr) override {
+	void VisitLine(const Line& line) override {
 		// Draw line
 	}
-	void VisitCircle(Primitive* shapePtr) override {
+	void VisitCircle(const Circle& circle) override {
 		// Draw circle
 	}
-	void VisitPolygon(Primitive* shapePtr) override {
+	void VisitPolygon(const Polygon& polygon) override {
 		// Draw polygon
 	}
 
 private:
-	Canvas* m_canvasPtr;
+	std::shared_ptr<Canvas> m_canvasPtr;
 };
 
 // The class contains shapes that contain specified point. Used to select shapes.
@@ -36,16 +37,16 @@ public:
 		return m_selectedShapes;
 	}
 
-	void VisitPoint(Primitive* shapePtr) override {
+	void VisitPoint(const Point& point) override {
 		// Check if the shape contains a coordinate, then add the shape to the list 'm_selectedShapes'.
 	}
-	void VisitLine(Primitive* shapePtr) override {
+	void VisitLine(const Line& line) override {
 		// Check if the shape contains a coordinate, then add the shape to the list 'm_selectedShapes'.
 	}
-	void VisitCircle(Primitive* shapePtr) override {
+	void VisitCircle(const Circle& circle) override {
 		// Check if the shape contains a coordinate, then add the shape to the list 'm_selectedShapes'.
 	}
-	void VisitPolygon(Primitive* shapePtr) override {
+	void VisitPolygon(const Polygon& polygon) override {
 		// Check if the shape contains a coordinate, then add the shape to the list 'm_selectedShapes'.
 	}
 
@@ -77,8 +78,8 @@ public:
 	}
 
 private:
-	Document* m_activeDoc = nullptr;
-	DrawingVisitor* m_drawingVisitor;
+	std::unique_ptr<Document> m_activeDocPtr;
+	std::shared_ptr<DrawingVisitor> m_drawingVisitorPtr;
 	
 	EditorFrame m_EditorFrame;
 };

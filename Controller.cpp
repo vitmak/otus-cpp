@@ -2,24 +2,24 @@
 
 
 GraphicEditorApp::GraphicEditorApp() {
-	m_drawingVisitor = new DrawingVisitor{ &m_EditorFrame.GetCanvas() };
+	m_drawingVisitorPtr = std::make_shared<DrawingVisitor>(m_EditorFrame.GetCanvas());
 }
 
 void GraphicEditorApp::CreateNewDocument() {
-	if (m_activeDoc && m_activeDoc->IsModified()) {
+	if (m_activeDocPtr && m_activeDocPtr->IsModified()) {
 		// TODO: Save old document?
 	}
-	m_activeDoc = new Document{};
+	m_activeDocPtr = std::make_unique<Document>(Document{});
 }
 
 void GraphicEditorApp::ImportDocument(const std::string& filePath) {
-	if (m_activeDoc && m_activeDoc->IsModified()) {
+	if (m_activeDocPtr && m_activeDocPtr->IsModified()) {
 		// TODO: Save old document?
 	}
 
 	// Set new document
 	// ...
-	m_activeDoc->VisitAllPrimitives(m_drawingVisitor);
+	m_activeDocPtr->VisitAllPrimitives(m_drawingVisitorPtr);
 }
 
 void GraphicEditorApp::ExportDocument(const std::string& filePath) {
@@ -27,22 +27,22 @@ void GraphicEditorApp::ExportDocument(const std::string& filePath) {
 }
 
 void GraphicEditorApp::CreatePrimitive(PrimitiveTypes primitiveType) {
-	Primitive* shapePtr = nullptr;
+	std::shared_ptr<Primitive> shapePtr;
 	switch (primitiveType) {
 	case PrimitiveTypes::ePoint:
-		shapePtr = new Point{};
+		shapePtr = std::make_shared<Point>(Point{});
 		break;
 	
 	case PrimitiveTypes::eLine:
-		shapePtr = new Line{};
+		shapePtr = std::make_shared<Line>(Line{});
 		break;
 	
 	case PrimitiveTypes::eCircle:
-		shapePtr = new Circle{};
+		shapePtr = std::make_shared<Circle>(Circle{});
 		break;
 	
 	case PrimitiveTypes::ePolygon:
-		shapePtr = new Polygon{};
+		shapePtr = std::make_shared<Polygon>(Polygon{});
 		break;
 	
 	default:
@@ -51,26 +51,25 @@ void GraphicEditorApp::CreatePrimitive(PrimitiveTypes primitiveType) {
 		break;
 	}
 
-	m_activeDoc->AddPrimitive(shapePtr);
-	shapePtr->Assept(m_drawingVisitor);
+	m_activeDocPtr->AddPrimitive(shapePtr);
+	shapePtr->Assept(m_drawingVisitorPtr);
 }
 
 void GraphicEditorApp::DeletePrimitive() {
-	if (m_activeDoc == nullptr || m_activeDoc->GetActiveShape() == nullptr)
+	if (m_activeDocPtr == nullptr || m_activeDocPtr->GetActiveShape() == nullptr)
 		return;
 	
-	m_activeDoc->DeleteActivePrimitive();
-	m_activeDoc->VisitAllPrimitives(m_drawingVisitor);
+	m_activeDocPtr->DeleteActivePrimitive();
+	m_activeDocPtr->VisitAllPrimitives(m_drawingVisitorPtr);
 }
 
 void GraphicEditorApp::SelectPrimitive(int x, int y) const {
-	
-	SelectingVisitor selectingVisitor(x, y);
-	m_activeDoc->VisitAllPrimitives(&selectingVisitor);
-	auto shapes = selectingVisitor.GetSelectedShapes();
+	auto selectingVisitor = std::make_shared<SelectingVisitor>(x, y);
+	m_activeDocPtr->VisitAllPrimitives(selectingVisitor);
+	auto shapes = selectingVisitor->GetSelectedShapes();
 	// ...
 	Primitive* selectedShape = nullptr;
 	// Select a specific shape from the 'shapes' list by any criterion.
 
-	m_activeDoc->SetActiveShape(selectedShape);
+	m_activeDocPtr->SetActiveShape(selectedShape);
 }

@@ -93,11 +93,11 @@ public:
 		return m_menuBar;
 	}
 
-	Canvas& GetCanvas() const {
-		return *m_canvas;
+	std::shared_ptr<Canvas> GetCanvas() const {
+		return m_canvasPtr;
 	}
 	
 private:
 	Menu m_menuBar;
-	Canvas* m_canvas;
+	std::shared_ptr<Canvas> m_canvasPtr;
 };

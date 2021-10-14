@@ -57,8 +57,8 @@ int main() {
 	
 	menuBar.OnClick("Select primitives");
 	auto canvas = graphicEditor.GetFrame().GetCanvas();
-	canvas.SetCommand(OnCanvasClick);
-	canvas.OnMouseClick(100, 100);
+	canvas->SetCommand(OnCanvasClick);
+	canvas->OnMouseClick(100, 100);
 
 	menuBar.OnClick("Delete primitive");
 	menuBar.OnClick("Export Document");
