@@ -51,7 +51,6 @@ void GraphicEditorApp::CreatePrimitive(PrimitiveTypes primitiveType) {
 		break;
 	}
 
-	//SetShapeParam();
 	m_activeDoc->AddPrimitive(shapePtr);
 	shapePtr->Assept(m_drawingVisitor);
 }
@@ -74,8 +73,4 @@ void GraphicEditorApp::SelectPrimitive(int x, int y) const {
 	// Select a specific shape from the 'shapes' list by any criterion.
 
 	m_activeDoc->SetActiveShape(selectedShape);
-}
-
-void GraphicEditorApp::SetShapeParam(const std::vector<Point>& points) {
-	//m_pToolbar->GetConfiguration();
 }

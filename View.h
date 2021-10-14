@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include <list>
 #include <functional>
 
 
@@ -14,13 +14,6 @@ enum class PrimitiveTypes {
 };
 
 
-class Canvas {
-public:
-	void OnMouseButtonClick(){
-		// ...
-	}
-};
-
 class Dialog{
 	// ...
 };
@@ -29,99 +22,75 @@ class PrimitiveDetailsDlg : public Dialog {
 	// ...
 };
 
-//
-class Toolbar {
-public:
-	Toolbar() = default;
-
-	void OnCreatePrimitive() {
-		PrimitiveDetailsDlg dlg;
-		// Get primitive details (primitive type )
-		// Activate creating primitive mode 
-		m_activeShapeType = PrimitiveTypes::eLine;
-
-		// Send message to main frame
-	}
-
-	void OnSetColorPalette() {
-		// Set color for drawing primitives
-	}
-
-	void OnSelectPrimitives() {
-
-	}
-
+class FilePathDlg : public Dialog {
 	// ...
-
-private:
-	PrimitiveTypes m_activeShapeType = PrimitiveTypes::eEmpty;
 };
 
-//template <typename R, typename ... Args>
-//class MouseClickEvent {
-//public:
-//private:
-//	std::function<R(Args...)> m_handler;
-//};
-
-//template <typename R, typename ... Args>
-class MenuItem {
-public:
-	MenuItem(const std::string& name, const std::function<void()>& func) : m_name{ name }, m_command{ func }
-	{}
-	void ExecuteCommand() const {
-		m_command();
-	}
-private:
-	std::string m_name;
-	std::function<void()> m_command;
-};
 
 class Menu {
 public:
 	Menu() = default;
 
-	void AddItem(const MenuItem& menuItem) {
+	void AddItem(const std::string& name) {
 		// ...
 	}
 
+	void OnClick(const std::string& itemName) const {
+		// find command with given name
+		
+		// m_menuItem->ExecuteCommand()
+	}
+
+	void SetCommand(const std::string& itemName, const std::function<void()>& func) {
+		// find command with given name
+
+		// Set command for found item.
+	}
+
 private:
-	template <typename R, typename ... Args>
-	std::vector<MenuItem> m_menuItems;
+	class MenuItem {
+	public:
+		MenuItem(const std::string& name) : m_name{ name }
+		{}
+		void ExecuteCommand() const {
+			m_command();
+		}
+	private:
+		std::string m_name;
+		std::function<void()> m_command;
+	};
+
+	std::list<std::string, MenuItem> m_menuItems;
 };
 
+class GraphicEditorApp;
 class Wnd {};
-class WorkspaceWnd : public Wnd {
+class Canvas : public Wnd {
 public:
-	void OnMouseClick() {
-		//...
-	}
+	Canvas() = default;
+	void OnMouseClick(int x, int y);
 };
 
 class EditorFrame {
 public:
 	EditorFrame() {
-		m_menuBar.AddItem("Create New", OnCreateNewDocument);
-		m_menuBar.AddItem("Import Document", OnImportDocument);
-		m_menuBar.AddItem("Export Document", OnExportDocument);
-	}
-	void OnCreateNewDocument() {
-
-	}
-
-	void OnImportDocument() {
-
+		m_menuBar.AddItem("Create New");
+		m_menuBar.AddItem("Import Document");
+		m_menuBar.AddItem("Export Document");
+		m_menuBar.AddItem("Create primitive");
+		m_menuBar.AddItem("Select primitive");
+		m_menuBar.AddItem("Delete primitive");
 	}
 
-	void OnExportDocument() {
-
+	const Menu& GetMenu() const {
+		return m_menuBar;
 	}
+
+	Canvas& GetCanvas() const {
+		return *m_canvas;
+	}
+	
 private:
-
 	Menu m_menuBar;
-	Toolbar* m_toolbar;
 	Canvas* m_canvas;
 };
-// TODO: add next classes:
-// - class MenuItem{};
-// - class Menu {};

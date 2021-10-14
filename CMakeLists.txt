@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(GraphicEditor VERSION 0.0.1)
 
-add_executable(GraphicEditor main.cpp Model.h Model.cpp View.h Controller.h Controller.cpp)
+add_executable(GraphicEditor main.cpp Model.h Model.cpp View.h  Controller.h Controller.cpp)
 
 set_target_properties(GraphicEditor 
     PROPERTIES

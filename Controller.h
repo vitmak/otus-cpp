@@ -5,9 +5,6 @@
 #include "string"
 
 
-class Document;
-
-// 
 class DrawingVisitor : public IShapeVisitor {
 public:
 	DrawingVisitor() = default;
@@ -59,7 +56,7 @@ private:
 	std::forward_list<Primitive*> m_selectedShapes;
 };
 
-
+class Document;
 class GraphicEditorApp {
 public:
 	GraphicEditorApp();
@@ -74,12 +71,14 @@ public:
 
 	void SelectPrimitive(int x, int y) const;
 
-private:
-	void SetShapeParam(const std::vector<Point>& points);
 
+	const EditorFrame& GetFrame() const {
+		return m_EditorFrame;
+	}
+
+private:
 	Document* m_activeDoc = nullptr;
 	DrawingVisitor* m_drawingVisitor;
 	
-	Toolbar* m_pToolbar;
-
+	EditorFrame m_EditorFrame;
 };
