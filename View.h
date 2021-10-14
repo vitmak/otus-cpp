@@ -34,7 +34,7 @@ class Toolbar {
 public:
 	Toolbar() = default;
 
-	void OnCreatePrimitive(PrimitiveTypes primitiveType) {
+	void OnCreatePrimitive() {
 		PrimitiveDetailsDlg dlg;
 		// Get primitive details (primitive type )
 		// Activate creating primitive mode 
@@ -64,20 +64,24 @@ private:
 //	std::function<R(Args...)> m_handler;
 //};
 
-template <typename R, typename ... Args>
+//template <typename R, typename ... Args>
 class MenuItem {
 public:
+	MenuItem(const std::string& name, const std::function<void()>& func) : m_name{ name }, m_command{ func }
+	{}
+	void ExecuteCommand() const {
+		m_command();
+	}
 private:
 	std::string m_name;
-	std::function<R(Args...)> m_handler;
+	std::function<void()> m_command;
 };
 
 class Menu {
 public:
 	Menu() = default;
 
-	template <typename R, typename ... Args>
-	void AddItem(const MenuItem<R, Args...>& menuItem) {
+	void AddItem(const MenuItem& menuItem) {
 		// ...
 	}
 
@@ -97,7 +101,9 @@ public:
 class EditorFrame {
 public:
 	EditorFrame() {
-		m_menuBar.AddItem<void, void>();
+		m_menuBar.AddItem("Create New", OnCreateNewDocument);
+		m_menuBar.AddItem("Import Document", OnImportDocument);
+		m_menuBar.AddItem("Export Document", OnExportDocument);
 	}
 	void OnCreateNewDocument() {
 
