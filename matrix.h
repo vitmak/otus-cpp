@@ -15,6 +15,10 @@ public:
         return *this;
     }
 
+    T& GetValue() {
+        return m_value;
+    }
+
 private:
     T m_value;
 };
@@ -39,6 +43,16 @@ public:
             return itFind->second;
         }
 
+        size_t size() {
+            size_t initItems = 0;
+            for (auto& v : m_lineItems) {
+                if (v.second.GetValue() != defaultValue)
+                    ++initItems;
+            }
+
+            return initItems;
+        }
+
     private:
         std::map<int/*columnIndex*/, MatrixItem<T>> m_lineItems;
     };
@@ -55,6 +69,15 @@ public:
         }
 
         return itFind->second;
+    }
+
+    size_t size() {
+        size_t matrixSize = 0;
+        for (auto& v : m_matrixLines) {
+            matrixSize += v.second.size();
+        }
+
+        return matrixSize;
     }
 
 private:

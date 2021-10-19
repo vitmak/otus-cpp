@@ -20,8 +20,9 @@ int main() {
 		}
 		std::cout << std::endl;
 	}
+	*/
 
-	std::cout << matrix.size();*/
+	std::cout << matrix.size() << std::endl;
 
 	/*for (const auto& v : matrix)
 	{
@@ -33,8 +34,6 @@ int main() {
 	}*/
 
 	// ((matrix[100][100] = 314) = 0) = 217;
-	// std::cout << matrix[100][100] << std::endl;
-
 
 	return 0;
 }
