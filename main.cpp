@@ -13,14 +13,13 @@ int main() {
 		matrix[row][column] = row;
 	}
 
-	/*
-	for (auto row = 1; row <= 9; ++row) {
-		for (auto column = 1; column <= 9; ++column) {
-			std::cout << matrix[row][column];
+	for (auto row = 1; row <= 8; ++row) {
+		for (auto column = 1; column <= 8; ++column) {
+			std::cout << matrix[row][column].GetValue() << " ";
 		}
 		std::cout << std::endl;
 	}
-	*/
+
 
 	std::cout << matrix.size() << std::endl;
 
