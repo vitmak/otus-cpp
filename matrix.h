@@ -27,6 +27,8 @@ private:
 struct MatrixCell {
     int m_rowIndex = 0;
     int m_columnIndex = 0;
+    bool m_busy = false;
+
     bool operator < (const MatrixCell& rhs)const {
         return m_rowIndex == rhs.m_rowIndex ? m_columnIndex < rhs.m_columnIndex : m_rowIndex < rhs.m_rowIndex;
     }
@@ -81,40 +83,42 @@ private:
     std::map<MatrixCell, MatrixItem<T>> m_Items;
 
 public:
-    //class Iterator {
-    //    
-    //public:
-    //    Iterator() = default;
-    //    // For methods Matrix::begin / Matrix::End 
-    //    Iterator(typename MatrixLines::iterator linesIter, bool isInitItemPtr = false) : m_linesIter{ linesIter } {
-    //        if (isInitItemPtr)
-    //            m_lineItemsPtr = m_linesIter->second.begin();
-    //    }
+    class Iterator {
+        using MatrixItems = std::map<MatrixCell, MatrixItem<T>>;
+    public:
+        Iterator() = default;
 
-    //    bool operator == (const Iterator& rhs) const {
-    //        bool res = m_linesIter == rhs.m_linesIter && m_lineItemsPtr == rhs.m_lineItemsPtr;
-    //        return m_linesIter == rhs.m_linesIter && m_lineItemsPtr == rhs.m_lineItemsPtr;
-    //    }
+        Iterator(typename MatrixItems::iterator itemsIter) : m_itemsIter{ itemsIter } {
+        }
 
-    //    /*bool operator != (const Iterator& rhs) const {
-    //        return !(*this == rhs);
-    //    }*/
-    //    /*
-    //    Iterator& operator++ () {
-    //        if (m_matrixIter != m_matrixLines.end())
-    //            ++m_matrixIter;
-    //    }*/
+        bool operator == (const Iterator& rhs) const {
+            return m_itemsIter == rhs.m_itemsIter;
+        }
 
-    //private:     
-    //    typename MatrixLines::iterator m_linesIter;
-    //    typename LineItems::iterator m_lineItemsPtr;
-    //};
+        bool operator != (const Iterator& rhs) const {
+            return !(*this == rhs);
+        }
+        
+        Iterator& operator++ () {
+            ++m_itemsIter;
+            return *this;
+        }
 
-    //Iterator begin() {
-    //    return Iterator{ m_matrixLines.begin() };
-    //}
+        std::tuple<int, int, T> operator* () {
+            while (m_itemsIter->second.GetValue() == defaultValue)
+                operator++();
+            return std::make_tuple(m_itemsIter->first.m_rowIndex, m_itemsIter->first.m_columnIndex, m_itemsIter->second.GetValue());
+        }
 
-    //Iterator end() {
-    //    return Iterator{ m_matrixLines.end() };
-    //}
+    private:     
+        typename MatrixItems::iterator m_itemsIter;
+    };
+
+    Iterator begin() {
+        return Iterator{ m_Items.begin() };
+    }
+
+    Iterator end() {
+        return Iterator{ m_Items.end() };
+    }
 };

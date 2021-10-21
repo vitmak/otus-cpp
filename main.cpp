@@ -20,30 +20,18 @@ int main() {
 		std::cout << std::endl;
 	}
 
-
 	std::cout << matrix.size() << std::endl;
 
-	//
-	////---
-	//auto iter = matrix.begin();
-	//auto iterEnd = matrix.end();
-	//if (iterEnd == matrix.end()) {
-	//	std::cout << "is iter to end" << std::endl;
-	//}
-
-	
-	//---
-
-	/*for (const auto& v : matrix)
+	for (const auto& v : matrix)
 	{
 		int x;
 		int y;
-		int v;
-		std::tie(x, y, v) = v;
-		std::cout << x << y << v << std::endl;
-	}*/
+		int value;
+		std::tie(x, y, value) = v;
+		std::cout << x << y << value << std::endl;
+	}
 
-	// ((matrix[100][100] = 314) = 0) = 217;
+	((matrix[100][100] = 314) = 0) = 217;
 
 	return 0;
 }
