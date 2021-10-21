@@ -1,7 +1,7 @@
 #pragma once
 
 #include <map>
-#include <list>
+#include <tuple>
 #include <utility>
 
 
@@ -24,62 +24,97 @@ private:
 };
 
 
+struct MatrixCell {
+    int m_rowIndex = 0;
+    int m_columnIndex = 0;
+    bool operator < (const MatrixCell& rhs)const {
+        return m_rowIndex == rhs.m_rowIndex ? m_columnIndex < rhs.m_columnIndex : m_rowIndex < rhs.m_rowIndex;
+    }
+};
+
+
 template <typename T, T defaultValue>
 class Matrix {
 public:
-
-    class MatrixLine {
+    class MatrixItemGetter {
     public:
-
-        MatrixLine() = default;
-        MatrixItem<T>& operator [] (int columnIndex) {
-            auto itFind = m_lineItems.find(columnIndex);
-            if (itFind == m_lineItems.end()) {
-                MatrixItem<T> item{ defaultValue };
-                auto [itInsert, ok] = m_lineItems.insert({ columnIndex, item });
-                return itInsert->second;
-            }
-            
-            return itFind->second;
+        MatrixItemGetter(Matrix* matrixPtr, int rowIndex) : m_matrixPtr{ matrixPtr }, m_rowIndex{rowIndex} {
         }
 
-        size_t size() {
-            size_t initItems = 0;
-            for (auto& v : m_lineItems) {
-                if (v.second.GetValue() != defaultValue)
-                    ++initItems;
-            }
-
-            return initItems;
+        MatrixItem<T>& operator [] (int columnIndex) {
+            return m_matrixPtr->GetMatrixItem(MatrixCell{m_rowIndex, columnIndex});
         }
 
     private:
-        std::map<int/*columnIndex*/, MatrixItem<T>> m_lineItems;
+        int m_rowIndex = 0;
+        Matrix* m_matrixPtr;
     };
 
 public:
-    Matrix() = default;
 
-    MatrixLine& operator [] (int rowIndex) {
-        auto itFind = m_matrixLines.find(rowIndex);
-        if (itFind == m_matrixLines.end()) {
-            MatrixLine matrLine{};
-            auto [itInsert, isOk] = m_matrixLines.insert({ rowIndex, matrLine });
-            return itInsert->second;
+    Matrix() = default;
+    MatrixItem<T>& GetMatrixItem(const MatrixCell& matrCell) {
+        auto itFind = m_Items.find(matrCell);
+        if (itFind == m_Items.end()) {
+            auto [it, status] = m_Items.insert({ matrCell, MatrixItem{defaultValue} });
+            return it->second;
         }
 
         return itFind->second;
     }
 
+    MatrixItemGetter operator [] (int rowIndex) {
+        return MatrixItemGetter{this, rowIndex};
+    }
+
     size_t size() {
         size_t matrixSize = 0;
-        for (auto& v : m_matrixLines) {
-            matrixSize += v.second.size();
+        for (auto& v : m_Items) {
+            if (v.second.GetValue() != defaultValue)
+                ++matrixSize;
         }
 
         return matrixSize;
     }
 
 private:
-    std::map<int/*rowIndex*/, MatrixLine> m_matrixLines;
+    std::map<MatrixCell, MatrixItem<T>> m_Items;
+
+public:
+    //class Iterator {
+    //    
+    //public:
+    //    Iterator() = default;
+    //    // For methods Matrix::begin / Matrix::End 
+    //    Iterator(typename MatrixLines::iterator linesIter, bool isInitItemPtr = false) : m_linesIter{ linesIter } {
+    //        if (isInitItemPtr)
+    //            m_lineItemsPtr = m_linesIter->second.begin();
+    //    }
+
+    //    bool operator == (const Iterator& rhs) const {
+    //        bool res = m_linesIter == rhs.m_linesIter && m_lineItemsPtr == rhs.m_lineItemsPtr;
+    //        return m_linesIter == rhs.m_linesIter && m_lineItemsPtr == rhs.m_lineItemsPtr;
+    //    }
+
+    //    /*bool operator != (const Iterator& rhs) const {
+    //        return !(*this == rhs);
+    //    }*/
+    //    /*
+    //    Iterator& operator++ () {
+    //        if (m_matrixIter != m_matrixLines.end())
+    //            ++m_matrixIter;
+    //    }*/
+
+    //private:     
+    //    typename MatrixLines::iterator m_linesIter;
+    //    typename LineItems::iterator m_lineItemsPtr;
+    //};
+
+    //Iterator begin() {
+    //    return Iterator{ m_matrixLines.begin() };
+    //}
+
+    //Iterator end() {
+    //    return Iterator{ m_matrixLines.end() };
+    //}
 };

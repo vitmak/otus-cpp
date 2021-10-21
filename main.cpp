@@ -23,6 +23,17 @@ int main() {
 
 	std::cout << matrix.size() << std::endl;
 
+	//
+	////---
+	//auto iter = matrix.begin();
+	//auto iterEnd = matrix.end();
+	//if (iterEnd == matrix.end()) {
+	//	std::cout << "is iter to end" << std::endl;
+	//}
+
+	
+	//---
+
 	/*for (const auto& v : matrix)
 	{
 		int x;
