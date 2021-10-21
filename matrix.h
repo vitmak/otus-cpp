@@ -3,6 +3,7 @@
 #include <map>
 #include <tuple>
 #include <utility>
+#include <stdexcept>
 
 
 template<typename T>
@@ -48,8 +49,8 @@ public:
         }
 
     private:
+        Matrix* m_matrixPtr = nullptr;
         int m_rowIndex = 0;
-        Matrix* m_matrixPtr;
     };
 
 public:
@@ -57,9 +58,12 @@ public:
     Matrix() = default;
     MatrixItem<T>& GetMatrixItem(const MatrixCell& matrCell) {
         auto itFind = m_Items.find(matrCell);
+        
         if (itFind == m_Items.end()) {
-            auto [it, status] = m_Items.insert({ matrCell, MatrixItem{defaultValue} });
-            return it->second;
+            auto insert = m_Items.insert(/*paIns*/{ matrCell, MatrixItem<T>{defaultValue} });
+            if (!insert.second)
+                throw std::bad_alloc();
+            return insert.first->second;
         }
 
         return itFind->second;
