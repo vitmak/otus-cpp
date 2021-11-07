@@ -26,13 +26,13 @@ private:
     std::string m_cmdName;
 };
 
-class BlockPackage;
+class CommandPackage;
 class BlockHandler {
 public:
-    virtual void StopBlock(BlockPackage* blockPackagePtr) = 0;
-    virtual void StartDymamicBlock(BlockPackage* blockPackagePtr) = 0;
-    virtual void EndDymamicBlock(BlockPackage* blockPackagePtr) = 0;
-    virtual void AddCommandToBlock(BlockPackage* blockPackagePtr, const Command& cmd) = 0;
+    virtual void StopBlock(CommandPackage* blockPackagePtr) = 0;
+    virtual void StartDymamicBlock(CommandPackage* blockPackagePtr) = 0;
+    virtual void EndDymamicBlock(CommandPackage* blockPackagePtr) = 0;
+    virtual void AddCommandToBlock(CommandPackage* blockPackagePtr, const Command& cmd) = 0;
     
     //
     virtual bool IsBlockEmpty() const = 0;
@@ -43,13 +43,13 @@ class StandartBlockHandler : public BlockHandler {
 public:
     StandartBlockHandler(){}
 
-    void StopBlock(BlockPackage* blockPackagePtr) override;
+    void StopBlock(CommandPackage* blockPackagePtr) override;
 
-    void StartDymamicBlock(BlockPackage* blockPackagePtr) override {}
+    void StartDymamicBlock(CommandPackage* blockPackagePtr) override {}
 
-    void EndDymamicBlock(BlockPackage* blockPackagePtr) override {}
+    void EndDymamicBlock(CommandPackage* blockPackagePtr) override {}
 
-    void AddCommandToBlock(BlockPackage* blockPackagePtr, const Command& cmd) override;
+    void AddCommandToBlock(CommandPackage* blockPackagePtr, const Command& cmd) override;
 
     inline bool IsBlockEmpty() const override {
         return m_cmdBlock.empty();
@@ -92,9 +92,9 @@ private:
 //};
 
 
-class BlockPackage {
+class CommandPackage {
 public:
-    BlockPackage(int blockSize) : m_blockSize{blockSize} {
+    CommandPackage(int blockSize) : m_blockSize{blockSize} {
         m_blockHandlerPtr = std::make_shared<StandartBlockHandler>();
     }
 
@@ -148,7 +148,7 @@ private:
 };
 
 
-void StandartBlockHandler::AddCommandToBlock(BlockPackage* blockPackagePtr, const Command& cmd) {
+void StandartBlockHandler::AddCommandToBlock(CommandPackage* blockPackagePtr, const Command& cmd) {
     m_cmdBlock.push_back(cmd);
     auto blockSize = blockPackagePtr->GetBlockSize();
     if (m_cmdBlock.size() == blockSize) {
@@ -156,7 +156,7 @@ void StandartBlockHandler::AddCommandToBlock(BlockPackage* blockPackagePtr, cons
     }
 }
 
-void StandartBlockHandler::StopBlock(BlockPackage* blockPackagePtr) {
+void StandartBlockHandler::StopBlock(CommandPackage* blockPackagePtr) {
     blockPackagePtr->SetBlockHandler(nullptr);
 }
 
@@ -169,19 +169,19 @@ int main(int argc, char* argv[]) {
 
     auto val = argv[1];
 
-    BlockPackage blockPackage{ atoi(argv[1]) };
+    CommandPackage commandPackage{ atoi(argv[1]) };
 
     std::string line;
     while (std::getline(std::cin, line)) {
         
         Command cmd{line};
-        blockPackage.ParseCommand(cmd);
+        commandPackage.ParseCommand(cmd);
 
         if (cmd.IsEOF())
             break;
     }
 
-    auto cmdBlock = blockPackage.GetCommandPackage();
+    auto cmdBlock = commandPackage.GetCommandPackage();
     for (const auto v : cmdBlock) {
         v->PrintCommandBlock(std::cout);
         //v.Save();
