@@ -3,6 +3,10 @@
 #include <list>
 #include <vector>
 #include <cstdlib>
+#include <chrono>
+#include <thread>
+
+using namespace std::chrono_literals;
 
 
 class Command {
@@ -183,6 +187,7 @@ int main(int argc, char* argv[]) {
 
     auto cmdBlock = commandPackage.GetCommandPackage();
     for (const auto v : cmdBlock) {
+        std::this_thread::sleep_for(1000ms);
         v->PrintCommandBlock(std::cout);
         //v.Save();
     }
