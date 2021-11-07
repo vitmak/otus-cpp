@@ -95,7 +95,7 @@ private:
 class BlockPackage {
 public:
     BlockPackage(int blockSize) : m_blockSize{blockSize} {
-        m_blockHandlerPtr = new StandartBlockHandler{};
+        m_blockHandlerPtr = std::make_shared<StandartBlockHandler>();
     }
 
     void ParseCommand(const Command& cmd) {
@@ -113,7 +113,7 @@ public:
         }
     }
 
-    void SetBlockHandler(BlockHandler* blockHandlerPtr) {
+    void SetBlockHandler(std::shared_ptr<BlockHandler> blockHandlerPtr) {
         
         if (!m_blockHandlerPtr->IsBlockEmpty())
             m_blockPackage.push_back(m_blockHandlerPtr);
@@ -124,7 +124,7 @@ public:
         return m_blockSize;
     }
 
-    const std::list<BlockHandler*>& GetCommandPackage() const {
+    const std::list<std::shared_ptr<BlockHandler>>& GetCommandPackage() const {
         return m_blockPackage;
     }
 
@@ -142,9 +142,9 @@ private:
     }
 
 private:
-    BlockHandler* m_blockHandlerPtr;
+    std::shared_ptr<BlockHandler> m_blockHandlerPtr;
     const int m_blockSize;
-    std::list<BlockHandler*> m_blockPackage;
+    std::list<std::shared_ptr<BlockHandler>> m_blockPackage;
 };
 
 
@@ -152,7 +152,7 @@ void StandartBlockHandler::AddCommandToBlock(BlockPackage* blockPackagePtr, cons
     m_cmdBlock.push_back(cmd);
     auto blockSize = blockPackagePtr->GetBlockSize();
     if (m_cmdBlock.size() == blockSize) {
-        blockPackagePtr->SetBlockHandler(new StandartBlockHandler{});
+        blockPackagePtr->SetBlockHandler(std::make_shared<StandartBlockHandler>());
     }
 }
 
