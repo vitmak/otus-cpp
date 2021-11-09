@@ -44,7 +44,20 @@ public:
 public:
     virtual bool IsBlockEmpty() const = 0;
 
-    virtual std::string ToString() const = 0;
+    //virtual std::string ToString() const = 0;
+    std::string ToString() const {
+        if (m_cmdBlock.empty())
+            return "";
+
+        std::string buf{ "bulk: " };
+        auto it = m_cmdBlock.cbegin();
+        buf += it->GetName();
+        while (++it != m_cmdBlock.cend()) {
+            buf += ", ";
+            buf += it->GetName();
+        }
+        return buf;
+    }
 
 protected:
     std::list<Command> m_cmdBlock;
@@ -66,7 +79,7 @@ public:
         return m_cmdBlock.empty();
     }
 
-    std::string ToString() const override {
+    /*std::string ToString() const override {
         if (m_cmdBlock.empty())
             return "";
 
@@ -78,7 +91,7 @@ public:
             buf += it->GetName();
         }
         return buf;
-    }
+    }*/
 };
 
 //class DynamicBlockHanler : public BlockHandler {
