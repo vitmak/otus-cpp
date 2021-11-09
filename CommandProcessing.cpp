@@ -1,10 +1,13 @@
 ﻿#include <iostream>
 #include <string>
 #include <list>
+#include <map>
 #include <vector>
 #include <cstdlib>
 #include <chrono>
 #include <thread>
+#include <ctime>
+#include <fstream>
 
 using namespace std::chrono_literals;
 
@@ -38,14 +41,18 @@ public:
     virtual void EndDymamicBlock(CommandPackage* blockPackagePtr) = 0;
     virtual void AddCommandToBlock(CommandPackage* blockPackagePtr, const Command& cmd) = 0;
     
-    //
+public:
     virtual bool IsBlockEmpty() const = 0;
-    virtual void PrintCommandBlock(std::ostream& out) const = 0;
+
+    virtual std::string ToString() const = 0;
+
+protected:
+    std::list<Command> m_cmdBlock;
 };
 
 class StandartBlockHandler : public BlockHandler {
 public:
-    StandartBlockHandler(){}
+    StandartBlockHandler() = default;
 
     void StopBlock(CommandPackage* blockPackagePtr) override;
 
@@ -59,19 +66,19 @@ public:
         return m_cmdBlock.empty();
     }
 
-    void PrintCommandBlock(std::ostream& out) const override {
-        // Get time
-        auto it = m_cmdBlock.cbegin();
-        out << "bulk: ";
-        out << it->GetName();
-        while (++it != m_cmdBlock.cend()) {
-            out << ", " << it->GetName();
-        }
-        out << std::endl;
-    }
+    std::string ToString() const override {
+        if (m_cmdBlock.empty())
+            return "";
 
-private:
-    std::vector<Command> m_cmdBlock;
+        std::string buf{ "bulk: " };
+        auto it = m_cmdBlock.cbegin();
+        buf += it->GetName();
+        while (++it != m_cmdBlock.cend()) {
+            buf += ", ";
+            buf += it->GetName();
+        }
+        return buf;
+    }
 };
 
 //class DynamicBlockHanler : public BlockHandler {
@@ -119,8 +126,12 @@ public:
 
     void SetBlockHandler(std::shared_ptr<BlockHandler> blockHandlerPtr) {
         
-        if (!m_blockHandlerPtr->IsBlockEmpty())
-            m_blockPackage.push_back(m_blockHandlerPtr);
+        if (!m_blockHandlerPtr->IsBlockEmpty()) {
+            std::time_t timeNow = std::time(nullptr);
+            std::localtime(&timeNow);
+            m_cmdPackage.insert({ m_blockHandlerPtr, timeNow});
+        }
+
         m_blockHandlerPtr = blockHandlerPtr;
     }
 
@@ -128,8 +139,29 @@ public:
         return m_blockSize;
     }
 
-    const std::list<std::shared_ptr<BlockHandler>>& GetCommandPackage() const {
-        return m_blockPackage;
+    void Print(std::ostream& out) const {
+        for (const auto v : m_cmdPackage) {
+            std::this_thread::sleep_for(1000ms);
+            out << v.first->ToString();
+        }
+    }
+
+    void Save() const {
+        std::string fileNamePrefix{ "bulk" };
+        std::string fileNamePostfix;
+        
+        std::ofstream fileCmdBlock;
+        
+        for (const auto v : m_cmdPackage) {
+            fileNamePostfix = std::to_string(v.second);
+            fileNamePostfix += ".log";
+            fileCmdBlock.open(fileNamePrefix + fileNamePostfix, std::ios::binary | std::ios::app);
+            
+            std::string cmdBlockContent = v.first->ToString();
+            fileCmdBlock.write(cmdBlockContent.c_str(), cmdBlockContent.length());
+            
+            fileCmdBlock.close();
+        }
     }
 
 private:
@@ -148,7 +180,7 @@ private:
 private:
     std::shared_ptr<BlockHandler> m_blockHandlerPtr;
     const int m_blockSize;
-    std::list<std::shared_ptr<BlockHandler>> m_blockPackage;
+    std::map<std::shared_ptr<BlockHandler>, std::time_t> m_cmdPackage;
 };
 
 
@@ -185,12 +217,9 @@ int main(int argc, char* argv[]) {
             break;
     }
 
-    auto cmdBlock = commandPackage.GetCommandPackage();
-    for (const auto v : cmdBlock) {
-        std::this_thread::sleep_for(1000ms);
-        v->PrintCommandBlock(std::cout);
-        //v.Save();
-    }
+    commandPackage.Print(std::cout);
+    commandPackage.Save();
+
 
     return 0;
 }
