@@ -42,9 +42,11 @@ public:
     virtual void AddCommandToBlock(CommandPackage* blockPackagePtr, const Command& cmd) = 0;
     
 public:
-    virtual bool IsBlockEmpty() const = 0;
+    
+    bool IsBlockEmpty() const {
+        return m_cmdBlock.empty();
+    }
 
-    //virtual std::string ToString() const = 0;
     std::string ToString() const {
         if (m_cmdBlock.empty())
             return "";
@@ -74,42 +76,19 @@ public:
     void EndDymamicBlock(CommandPackage* blockPackagePtr) override {}
 
     void AddCommandToBlock(CommandPackage* blockPackagePtr, const Command& cmd) override;
-
-    inline bool IsBlockEmpty() const override {
-        return m_cmdBlock.empty();
-    }
-
-    /*std::string ToString() const override {
-        if (m_cmdBlock.empty())
-            return "";
-
-        std::string buf{ "bulk: " };
-        auto it = m_cmdBlock.cbegin();
-        buf += it->GetName();
-        while (++it != m_cmdBlock.cend()) {
-            buf += ", ";
-            buf += it->GetName();
-        }
-        return buf;
-    }*/
 };
 
 //class DynamicBlockHanler : public BlockHandler {
 //public:
-//    DynamicBlockHanler(){}
+//    DynamicBlockHanler() = default;
 //
-//    void StopBlock(BlockPackage* blockPackagePtr) override  {}
+//    void StopBlock(CommandPackage* blockPackagePtr) override;
 //
-//    void StartDymamicBlock(BlockPackage* blockPackagePtr) override  {}
+//    void StartDymamicBlock(CommandPackage* blockPackagePtr) override {}
 //
-//    void EndDymamicBlock(BlockPackage* blockPackagePtr) override {}
+//    void EndDymamicBlock(CommandPackage* blockPackagePtr) override {}
 //
-//    void AddCommandToBlock(BlockPackage* blockPackagePtr, const Command& cmd) override {}
-//
-//    virtual bool IsBlockEmpty() const override {
-//        //return m_cmdBlock.empty();
-//        return true;
-//    }
+//    void AddCommandToBlock(CommandPackage* blockPackagePtr, const Command& cmd) override;
 //
 //private:
 //    int m_countOfStartDymamicBlocks = 0;
