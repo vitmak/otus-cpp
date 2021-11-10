@@ -2,14 +2,13 @@
 
 #include "BlockHandler.h"
 #include <iostream>
-#include <map>
-#include <ctime>
+#include <list>
 
 
 class CommandPackage {
 public:
     CommandPackage(int blockSize) : m_blockSize{ blockSize } {
-        m_blockHandlerPtr = std::make_shared<StandartBlockHandler>();
+        SetBlockHandler (std::make_shared<StandartBlockHandler>());
     }
 
     void ParseCommand(const Command& cmd);
@@ -44,5 +43,5 @@ private:
 private:
     std::shared_ptr<BlockHandler> m_blockHandlerPtr;
     const int m_blockSize;
-    std::map<std::shared_ptr<BlockHandler>, std::time_t> m_cmdPackage;
+    std::list<std::shared_ptr<BlockHandler>> m_cmdPackage;
 };

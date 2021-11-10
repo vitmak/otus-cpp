@@ -3,12 +3,17 @@
 #include <exception>
 
 
+BlockHandler::BlockHandler() {
+    m_timeCmdBlockCreated = std::time(nullptr);
+}
+
 std::string BlockHandler::ToString() const {
     if (m_cmdBlock.empty())
         return "";
 
     std::string buf{ "bulk: " };
     auto it = m_cmdBlock.cbegin();
+
     buf += it->GetName();
     while (++it != m_cmdBlock.cend()) {
         buf += ", ";

@@ -3,6 +3,7 @@
 #include "Command.h"
 #include <string>
 #include <list>
+#include <ctime>
 
 
 class CommandPackage;
@@ -14,14 +15,21 @@ public:
     virtual void AddCommandToBlock(CommandPackage* blockPackagePtr, const Command& cmd) = 0;
 
 public:
+    BlockHandler();
+
     inline bool IsBlockEmpty() const {
         return m_cmdBlock.empty();
     }
 
     std::string ToString() const;
 
+    std::time_t GetCmdBlockCreatedTime() const {
+        return m_timeCmdBlockCreated;
+    }
+
 protected:
     std::list<Command> m_cmdBlock;
+    std::time_t        m_timeCmdBlockCreated = 0;
 };
 
 
