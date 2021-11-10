@@ -41,7 +41,7 @@ public:
 
     void StartDymamicBlock(CommandPackage* blockPackagePtr) override;
 
-    void EndDymamicBlock([[maybe_unused]] CommandPackage* blockPackagePtr) override;
+    void EndDymamicBlock(CommandPackage* blockPackagePtr) override;
 
     void AddCommandToBlock(CommandPackage* blockPackagePtr, const Command& cmd) override;
 };
@@ -53,7 +53,8 @@ public:
 
     void StopBlock(CommandPackage* blockPackagePtr) override;
 
-    inline void StartDymamicBlock([[maybe_unused]] CommandPackage* blockPackagePtr) override {
+    inline void StartDymamicBlock(CommandPackage* blockPackagePtr) override {
+        (void*)blockPackagePtr;
         ++m_countOfStartDymamicBlocks;
     }
 

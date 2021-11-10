@@ -31,6 +31,7 @@ void StandartBlockHandler::StartDymamicBlock(CommandPackage* blockPackagePtr) {
 }
 
 void StandartBlockHandler::EndDymamicBlock([[maybe_unused]] CommandPackage* blockPackagePtr) {
+    //(void*)blockPackagePtr;
     throw "Data error: Invalid command structure.";
 }
 

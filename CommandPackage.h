@@ -3,6 +3,7 @@
 #include "BlockHandler.h"
 #include <iostream>
 #include <list>
+#include <memory>
 
 
 class CommandPackage {

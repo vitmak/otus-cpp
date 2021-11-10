@@ -5,7 +5,8 @@
 #include <exception>
 
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[]) {
+int main(int argc, char* argv[]) {
+    (void)argc;
     CommandPackage commandPackage{ atoi(argv[1]) };
 
     try {

@@ -12,8 +12,6 @@ set_target_properties(CommandProcessing
 
 if (MSVC)
     target_compile_options(CommandProcessing PRIVATE /W4)
-else ()
-    target_compile_options(CommandProcessing PRIVATE -Wall -Wextra -pedantic -Werror)
 endif()
 
 install(TARGETS CommandProcessing RUNTIME DESTINATION bin)
