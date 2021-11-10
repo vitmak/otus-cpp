@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(CommandProcessing VERSION 0.0.1)
 
-add_executable(CommandProcessing CommandProcessing.cpp)
+add_executable(CommandProcessing Command.h CommandProcessing.cpp BlockHandler.h BlockHandler.cpp CommandPackage.h CommandPackage.cpp)
 
 set_target_properties(CommandProcessing 
     PROPERTIES
