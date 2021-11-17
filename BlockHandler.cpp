@@ -2,6 +2,12 @@
 #include "CommandPackage.h"
 #include <exception>
 
+#include <chrono>
+#include <thread>
+#include <fstream>
+
+using namespace std::chrono_literals;
+
 
 BlockHandler::BlockHandler() {
     m_timeCmdBlockCreated = std::time(nullptr);
@@ -21,6 +27,33 @@ std::string BlockHandler::ToString() const {
     }
     return buf;
 }
+
+void BlockHandler::Print(std::ostream& out) const {
+    std::this_thread::sleep_for(1000ms);
+    out << ToString() << std::endl;
+}
+
+void BlockHandler::Save() const {
+    std::string fileNamePrefix{ "bulk" };
+    std::string fileNamePostfix;
+
+    std::ofstream fileCmdBlock;
+
+    fileNamePostfix = std::to_string(m_timeCmdBlockCreated);
+    fileNamePostfix += ".log";
+    fileCmdBlock.open(fileNamePrefix + fileNamePostfix, std::ios::binary | std::ios::app);
+
+    std::string cmdBlockContent = ToString();
+    fileCmdBlock.write(cmdBlockContent.c_str(), cmdBlockContent.length());
+
+    fileCmdBlock.close();
+}
+
+void BlockHandler::Logging() const {
+    Print(std::cout);
+    Save();
+}
+
 
 void StandartBlockHandler::StopBlock(CommandPackage* blockPackagePtr) {
     blockPackagePtr->SetBlockHandler(nullptr);

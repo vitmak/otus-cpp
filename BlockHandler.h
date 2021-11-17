@@ -23,9 +23,10 @@ public:
 
     std::string ToString() const;
 
-    std::time_t GetCmdBlockCreatedTime() const {
-        return m_timeCmdBlockCreated;
-    }
+    void Print(std::ostream& out) const;
+    void Save() const;
+
+    void Logging() const;
 
 protected:
     std::list<Command> m_cmdBlock;

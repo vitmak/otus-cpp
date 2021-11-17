@@ -19,9 +19,6 @@ int main(int argc, char* argv[]) {
             if (cmd.IsEOF())
                 break;
         }
-
-        commandPackage.Print(std::cout);
-        commandPackage.Save();
     }
     catch (const char* error) {
         std::cerr << error << std::endl;
