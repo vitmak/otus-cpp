@@ -20,10 +20,6 @@ public:
         return m_blockSize;
     }
 
-    void Print(std::ostream& out) const;
-
-    void Save() const;
-
 private:
     void StopBlock() {
         m_blockHandlerPtr->StopBlock(this);
