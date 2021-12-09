@@ -10,7 +10,7 @@ namespace po = boost::program_options;
 /*static*/ Config Config::ParseCmdArguments(int argc, const char* argv[]) {
     Config config;
 
-    po::options_description desc{ "Utility for detecting duplicate files. Command-line options:" };
+    po::options_description desc{ "Utility for detecting duplicate files. Command-line options" };
     desc.add_options()
         ("help,h", "Help message")
         ("include_dirs,i",
@@ -39,14 +39,14 @@ namespace po = boost::program_options;
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);
     notify(vm);
-
+    
     std::stringstream helpInfo;
     helpInfo << desc << std::endl;
     config.m_helpText = helpInfo.str();
     config.m_showHelp = vm.count("help");
 
     if (vm.count("include_dirs"))
-        config.m_incudeDirs = vm["include_dirs"].as<std::vector<std::string>>();
+        config.m_includeDirs = vm["include_dirs"].as<std::vector<std::string>>();
     if (vm.count("exclude_dirs"))
         config.m_excludeDirs = vm["exclude_dirs"].as<std::vector<std::string>>();
     if (vm.count("scan_level"))

@@ -4,19 +4,19 @@
 #include <vector>
 
 
+enum class ScanLevel {
+    Current = 0,
+    All = 1
+};
+
 class Config {
 public:
-    enum class ScanLevel {
-        Current = 0,
-        All = 1
-    };
-
     static Config ParseCmdArguments(int argc, const char* argv[]);
 
 public:
     bool m_showHelp;
     std::string m_helpText;
-    std::vector<std::string> m_incudeDirs;
+    std::vector<std::string> m_includeDirs;
     std::vector<std::string> m_excludeDirs;
     ScanLevel m_scanLevel;
     unsigned int m_minFileSize = 1;

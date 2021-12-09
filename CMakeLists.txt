@@ -6,13 +6,13 @@ find_package(Boost COMPONENTS program_options REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIR})
 
-add_executable(Bayan main.cpp "Config.h" Config.cpp)
+add_executable(Bayan main.cpp Config.h Config.cpp FileSeacher.h FileSeacher.cpp DirectoryTraversal.h)
 
 target_link_libraries(Bayan ${Boost_LIBRARIES})
 
 set_target_properties(Bayan 
     PROPERTIES
-    CXX_STANDARD 17
+    CXX_STANDARD 20
     CXX_STANDARD_REQUIRED ON
 )
 
