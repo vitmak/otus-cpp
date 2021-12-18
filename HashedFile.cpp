@@ -14,7 +14,7 @@ HashedFile::HashedFile(const std::filesystem::path& filePath, uint32_t blockSize
 	m_hashedBlocks.reserve(blocks);
 }
 
-std::vector<uint8_t> HashedFile::GetHashedBlock(int blockNumber) const {
+std::vector<uint8_t> HashedFile::GetHashedBlock(unsigned int blockNumber) const {
 	if (blockNumber < m_hashedBlocks.size())
 		return m_hashedBlocks[blockNumber];
 	
@@ -31,7 +31,7 @@ bool HashedFile::IsIdentical(const HashedFile& rhs) const {
 	if (m_fileSize != rhs.m_fileSize)
 		return false;
 	
-	for (auto blockNum = 0; blockNum < m_hashedBlocks.capacity(); ++blockNum) {
+	for (unsigned int blockNum = 0; blockNum < m_hashedBlocks.capacity(); ++blockNum) {
 		if (GetHashedBlock(blockNum) != rhs.GetHashedBlock(blockNum))
 			return false;
 	}

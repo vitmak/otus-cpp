@@ -19,7 +19,7 @@ public:
 	}
 
 private:
-	 std::vector<uint8_t> GetHashedBlock(int blockNumber) const;
+	 std::vector<uint8_t> GetHashedBlock(unsigned int blockNumber) const;
 
 private:
 	uintmax_t m_fileSize;
