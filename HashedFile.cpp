@@ -2,7 +2,7 @@
 
 
 HashedFile::HashedFile(const std::filesystem::path& filePath, uint32_t blockSize, std::shared_ptr<Hasher> hasherPtr)
-	: m_filePath{ filePath }, m_blockSize{ blockSize }, m_fileReader{ filePath.string() }, m_hasherPtr{hasherPtr}
+	: m_blockSize{ blockSize }, m_filePath{ filePath }, m_fileReader{ filePath.string() }, m_hasherPtr{hasherPtr}
 {
 	m_fileSize = file_size(m_filePath);
 
