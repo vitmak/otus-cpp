@@ -13,7 +13,7 @@ class Config;
 
 class DuplicateFilesSeacher {
 public:
-	DuplicateFilesSeacher(const Config& config, std::unique_ptr<DirectoryTraversalBase> dirTraversalPtr) : m_refConfig{config}, m_dirTraversalPtr(std::move(dirTraversalPtr)) {
+	DuplicateFilesSeacher(const Config& config, std::unique_ptr<DirectoryTraversalBase> dirTraversalPtr) : m_dirTraversalPtr(std::move(dirTraversalPtr)), m_refConfig{ config } {
 	}
 
 	std::list<std::filesystem::path> GetDuplicates() const;
