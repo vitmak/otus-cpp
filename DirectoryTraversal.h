@@ -30,37 +30,41 @@ public:
 		return false;
 	}
 
-	// maybe: use std::filesystem::path
 	std::list<std::filesystem::path> Traversal() override {
 		std::list<std::filesystem::path> allFilePath;
-
-		// begin RegexPattern
-		auto prefix = "^[\\w\\:\\\\]*(?:"s;
-		auto suffix = ")\\w*\\.\\w+$"s;
 
 		std::string allFileMasks;
 		for (auto it = m_refConfig.m_fileMasks.cbegin(); it != m_refConfig.m_fileMasks.cend(); ++it) {
 			if (it != m_refConfig.m_fileMasks.cbegin())
-				allFileMasks += "|";
-			allFileMasks += *it;
+				allFileMasks += '|';
+			for (auto symbol : *it) {
+				if (symbol == '*')
+					allFileMasks += "\\w*";
+				else if (symbol == '?')
+					allFileMasks += "\\w";
+				else if (symbol == '.')
+					allFileMasks += "\\.";
+				else
+					allFileMasks += symbol;
+			}
 		}
 
-		//  ^[\w\:\\]*(?:fileMask1|fileMask2 ...)\w*\.\w+$
+		auto prefix = "^[\\w\\:\\\\]*(?:"s;
+		auto suffix = ")$"s;
+
+		//  ^[\w\:\\]*(?:fileMask1|fileMask2 ...)$
 		const auto pattern = std::move(prefix) + std::move(allFileMasks) + std::move(suffix);
 		static const std::regex regularPattern{ pattern, std::regex_constants::ECMAScript | std::regex_constants::icase };
 		// end RegexPattern
 
 		for (const auto& dirPath : m_refConfig.m_includeDirs) {
 			for (auto const& dirEntry : IteratorType{ dirPath }) {
-				std::cout << dirEntry << '\n';
 				std::string directoryPath = dirEntry.path().string();
 				if (IsExlude(directoryPath))
 					continue;
 
 				if (dirEntry.is_regular_file()) {
-					auto fileSize = file_size(dirEntry.path());
-					//if (file_size(dirEntry.path()) < m_refConfig.m_minFileSize)
-					if (fileSize < m_refConfig.m_minFileSize)
+					if (file_size(dirEntry.path()) < m_refConfig.m_minFileSize)
 						continue;
 					
 						if (std::regex_search(directoryPath, regularPattern)) {
@@ -73,9 +77,7 @@ public:
 		return allFilePath;
 	}
 
-	~DirectoryTraversal() {
-		std::cout << "~DirectoryTraversal" << std::endl;
-	}
+	~DirectoryTraversal() = default;
 
 private:
 	const Config& m_refConfig;

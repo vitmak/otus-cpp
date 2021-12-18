@@ -2,24 +2,26 @@
 
 #include "Config.h"
 #include "DirectoryTraversal.h"
+#include "HashedFile.h"
 #include <memory>
 #include <filesystem>
 #include <string>
 #include <list>
 
 
-
 class Config;
 
-
-class FileSeacher {
+class DuplicateFilesSeacher {
 public:
-	FileSeacher(std::unique_ptr<DirectoryTraversalBase> dirTraversalPtr) : m_dirTraversalPtr(std::move(dirTraversalPtr)) {
-		
+	DuplicateFilesSeacher(const Config& config, std::unique_ptr<DirectoryTraversalBase> dirTraversalPtr) : m_refConfig{config}, m_dirTraversalPtr(std::move(dirTraversalPtr)) {
 	}
 
-	std::list<std::filesystem::path> GetAllFilePath() const; // MayBe: instead std::string use std::filesystem::path?
+	std::list<std::filesystem::path> GetDuplicates() const;
+
+private:
+	std::list<std::filesystem::path> GetAllFilePath() const;
 
 private:
 	std::unique_ptr<DirectoryTraversalBase> m_dirTraversalPtr;
+	const Config& m_refConfig;
 };

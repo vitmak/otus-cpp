@@ -6,7 +6,7 @@ find_package(Boost COMPONENTS program_options REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIR})
 
-add_executable(Bayan main.cpp Config.h Config.cpp FileSeacher.h FileSeacher.cpp DirectoryTraversal.h)
+add_executable(Bayan main.cpp Config.h Config.cpp FileSeacher.h FileSeacher.cpp DirectoryTraversal.h HashedFile.h HashedFile.cpp Hasher.h CRC32Hasher.h CRC32Hasher.cpp MD5Hasher.h MD5Hasher.cpp)
 
 target_link_libraries(Bayan ${Boost_LIBRARIES})
 
