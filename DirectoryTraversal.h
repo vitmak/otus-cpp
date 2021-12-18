@@ -3,6 +3,7 @@
 #include "Config.h"
 #include <iostream>
 #include <filesystem>
+#include <list>
 #include <regex>
 
 using namespace std::literals;
