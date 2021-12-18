@@ -65,11 +65,11 @@ public:
 					continue;
 
 				if (dirEntry.is_regular_file()) {
-					if (static_cast<unsigned int>(file_size(dirEntry.path())) < m_refConfig.m_minFileSize)
+					if (file_size(dirEntry.path()) < m_refConfig.m_minFileSize)
 						continue;
 					
-						if (std::regex_search(directoryPath, regularPattern)) {
-							allFilePath.push_back(dirEntry.path());
+					if (std::regex_search(directoryPath, regularPattern)) {
+						allFilePath.push_back(dirEntry.path());
 					}
 				}
 			}
