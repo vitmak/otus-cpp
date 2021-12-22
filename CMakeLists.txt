@@ -1,20 +1,20 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(CommandProcessing VERSION 0.0.1)
+project(AsyncCmdProcessing VERSION 0.0.1)
 
-add_executable(CommandProcessing Command.h CommandProcessing.cpp BlockHandler.h BlockHandler.cpp CommandPackage.h CommandPackage.cpp)
+add_executable(AsyncCmdProcessing Command.h CommandProcessing.cpp BlockHandler.h BlockHandler.cpp CommandPackage.h CommandPackage.cpp)
 
-set_target_properties(CommandProcessing 
+set_target_properties(AsyncCmdProcessing 
     PROPERTIES
-    CXX_STANDARD 17
+    CXX_STANDARD 20
     CXX_STANDARD_REQUIRED ON
 )
 
 if (MSVC)
-    target_compile_options(CommandProcessing PRIVATE /W4)
+    target_compile_options(AsyncCmdProcessing PRIVATE /W4)
 endif()
 
-install(TARGETS CommandProcessing RUNTIME DESTINATION bin)
+install(TARGETS AsyncCmdProcessing RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 
