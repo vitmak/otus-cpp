@@ -22,11 +22,9 @@ public:
     }
 
     std::string ToString() const;
-
-    void Print(std::ostream& out) const;
-    void Save() const;
-
-    void Logging() const;
+    std::time_t GetBlockCreatedTime() const {
+        return m_timeCmdBlockCreated;
+    }
 
 protected:
     std::list<Command> m_cmdBlock;

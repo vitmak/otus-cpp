@@ -20,7 +20,7 @@ void CommandPackage::SetBlockHandler(std::shared_ptr<BlockHandler> blockHandlerP
     if (m_blockHandlerPtr != nullptr && !m_blockHandlerPtr->IsBlockEmpty()) {
         m_cmdPackage.push_back(m_blockHandlerPtr);
 
-        m_blockHandlerPtr->Logging();
+        NotifyAll (m_blockHandlerPtr);
     }
 
     m_blockHandlerPtr = blockHandlerPtr;
