@@ -14,8 +14,6 @@ public:
 	void Log(const std::shared_ptr<BlockHandler>& blockHandlerPtr) override {
         std::string fileName{ "bulk" + blockHandlerPtr->GetBlockCreatedTime() + ".log"};
         
-        std::cout << std::this_thread::get_id() << " " << fileName << " " << blockHandlerPtr->ToString() << std::endl;
-
         std::ofstream fileCmdBlock;
         fileCmdBlock.open(fileName, std::ios::binary | std::ios::app);
 
