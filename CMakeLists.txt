@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.5)
 
 project(AsyncCmdProcessing VERSION 0.0.1)
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
 add_executable(AsyncCmdProcessing 
                Command.h 
                CommandProcessing.cpp 
@@ -13,9 +16,11 @@ add_executable(AsyncCmdProcessing
 
 set_target_properties(AsyncCmdProcessing 
     PROPERTIES
-    CXX_STANDARD 20
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
+
+target_link_libraries(AsyncCmdProcessing PRIVATE Threads::Threads)
 
 if (MSVC)
     target_compile_options(AsyncCmdProcessing PRIVATE /W4)
