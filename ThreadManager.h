@@ -1,0 +1,54 @@
+#pragma once
+
+#include "Logger.h"
+#include "ConsoleLogger.h"
+#include "FileLogger.h"
+#include <thread>
+#include <chrono>
+
+
+class ThreadManager {
+public:
+	ThreadManager()
+	{
+		const auto& consoleLogger = std::make_shared<ConsoleLogger>();
+		std::thread threadLog{ &ILogger::Logging, consoleLogger };
+		m_threadLog = std::move(threadLog);
+
+		const auto& fileLogger = std::make_shared<FileLogger>();
+		std::thread threadFile1{ &ILogger::Logging, fileLogger };
+		m_threadFile1 = std::move(threadFile1);
+		
+		std::thread threadFile2{ &ILogger::Logging, fileLogger };
+		m_threadFile2 = std::move(threadFile2);
+
+		m_loggers.push_back(consoleLogger);
+		m_loggers.push_back(fileLogger);
+
+		using namespace std::chrono_literals;
+		std::this_thread::sleep_for(1000ms);
+	}
+
+	~ThreadManager() {
+		m_threadLog.join();
+		m_threadFile1.join();
+		m_threadFile2.join();
+	}
+
+	void StopThreads() {
+		for (const auto& v : m_loggers)
+			v->m_queue.NotifyStopping();
+	}
+
+	void AddToLogging(const std::shared_ptr<BlockHandler>& blockHandler) {
+		for (const auto& v : m_loggers)
+			v->m_queue.Push(blockHandler);
+	}
+
+private:
+	std::thread m_threadLog;
+	std::thread m_threadFile1;
+	std::thread m_threadFile2;
+
+	std::list<std::shared_ptr<ILogger>> m_loggers;
+};

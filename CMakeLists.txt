@@ -2,7 +2,14 @@ cmake_minimum_required(VERSION 3.5)
 
 project(AsyncCmdProcessing VERSION 0.0.1)
 
-add_executable(AsyncCmdProcessing Command.h CommandProcessing.cpp BlockHandler.h BlockHandler.cpp CommandPackage.h CommandPackage.cpp Logger.h ConsoleLogger.h FileLogger.h)
+add_executable(AsyncCmdProcessing 
+               Command.h 
+               CommandProcessing.cpp 
+               BlockHandler.h BlockHandler.cpp 
+               CommandPackage.h CommandPackage.cpp 
+               Logger.h ConsoleLogger.h FileLogger.h 
+               ThreadManager.h 
+               CommandQueue.h)
 
 set_target_properties(AsyncCmdProcessing 
     PROPERTIES

@@ -5,10 +5,6 @@
 using namespace std::chrono_literals;
 
 
-BlockHandler::BlockHandler() {
-    m_timeCmdBlockCreated = std::time(nullptr);
-}
-
 std::string BlockHandler::ToString() const {
     if (m_cmdBlock.empty())
         return "";
@@ -24,6 +20,21 @@ std::string BlockHandler::ToString() const {
     return buf;
 }
 
+void BlockHandler::PushCommand(const Command& cmd) {
+    if (m_cmdBlock.empty()) {
+        /*static long cmdID = 0;
+        m_timeCmdBlockCreated = std::to_string(std::time(nullptr));
+        m_timeCmdBlockCreated += std::to_string(cmdID++);*/
+        
+        std::this_thread::sleep_for(1ms);
+        std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+        m_timeCmdBlockCreated = std::to_string(ms.count());
+    }
+
+    m_cmdBlock.push_back(cmd);
+}
+
+
 void StandartBlockHandler::StopBlock(CommandPackage* blockPackagePtr) {
     blockPackagePtr->SetBlockHandler(nullptr);
 }
@@ -37,7 +48,7 @@ void StandartBlockHandler::EndDymamicBlock([[maybe_unused]] CommandPackage* bloc
 }
 
 void StandartBlockHandler::AddCommandToBlock(CommandPackage* blockPackagePtr, const Command& cmd) {
-    m_cmdBlock.push_back(cmd);
+    PushCommand(cmd);
     auto blockSize = blockPackagePtr->GetBlockSize();
     if (m_cmdBlock.size() == blockSize) {
         blockPackagePtr->SetBlockHandler(std::make_shared<StandartBlockHandler>());
@@ -57,5 +68,5 @@ void DynamicBlockHanler::EndDymamicBlock(CommandPackage* blockPackagePtr) {
 }
 
 void DynamicBlockHanler::AddCommandToBlock([[maybe_unused]] CommandPackage* blockPackagePtr, const Command& cmd) {
-    m_cmdBlock.push_back(cmd);
+    PushCommand(cmd);
 }

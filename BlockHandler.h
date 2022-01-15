@@ -15,20 +15,22 @@ public:
     virtual void AddCommandToBlock(CommandPackage* blockPackagePtr, const Command& cmd) = 0;
 
 public:
-    BlockHandler();
+    BlockHandler() = default;
 
     inline bool IsBlockEmpty() const {
         return m_cmdBlock.empty();
     }
 
     std::string ToString() const;
-    std::time_t GetBlockCreatedTime() const {
+    inline std::string GetBlockCreatedTime() const {
         return m_timeCmdBlockCreated;
     }
 
+    void PushCommand(const Command& cmd);
+
 protected:
     std::list<Command> m_cmdBlock;
-    std::time_t        m_timeCmdBlockCreated = 0;
+    std::string        m_timeCmdBlockCreated;
 };
 
 
