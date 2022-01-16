@@ -5,9 +5,9 @@
 
 
 class BlockHandler;
-class ILogger {
+class Logger {
 public:
-	virtual ~ILogger() = default;
+	virtual ~Logger() = default;
 
 	void Logging() {
 		std::shared_ptr<BlockHandler> blockHandler;

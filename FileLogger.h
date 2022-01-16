@@ -6,7 +6,7 @@
 using namespace std::chrono_literals;
 
 
-class FileLogger : public ILogger {
+class FileLogger : public Logger {
 public:
 	FileLogger() = default;
 	~FileLogger() override {}

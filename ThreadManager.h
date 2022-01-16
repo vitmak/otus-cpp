@@ -12,14 +12,14 @@ public:
 	ThreadManager()
 	{
 		const auto& consoleLogger = std::make_shared<ConsoleLogger>();
-		std::thread threadLog{ &ILogger::Logging, consoleLogger };
+		std::thread threadLog{ &Logger::Logging, consoleLogger };
 		m_threadLog = std::move(threadLog);
 
 		const auto& fileLogger = std::make_shared<FileLogger>();
-		std::thread threadFile1{ &ILogger::Logging, fileLogger };
+		std::thread threadFile1{ &Logger::Logging, fileLogger };
 		m_threadFile1 = std::move(threadFile1);
 		
-		std::thread threadFile2{ &ILogger::Logging, fileLogger };
+		std::thread threadFile2{ &Logger::Logging, fileLogger };
 		m_threadFile2 = std::move(threadFile2);
 
 		m_loggers.push_back(consoleLogger);
@@ -53,5 +53,5 @@ private:
 	std::thread m_threadFile1;
 	std::thread m_threadFile2;
 
-	std::list<std::shared_ptr<ILogger>> m_loggers;
+	std::list<std::shared_ptr<Logger>> m_loggers;
 };

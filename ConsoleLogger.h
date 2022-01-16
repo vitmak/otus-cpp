@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-class ConsoleLogger : public ILogger {
+class ConsoleLogger : public Logger {
 public:
 	ConsoleLogger() = default;
 	~ConsoleLogger() override = default;
