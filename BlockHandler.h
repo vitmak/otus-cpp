@@ -28,9 +28,14 @@ public:
 
     void PushCommand(const Command& cmd);
 
+    void SetCmdBlockName(const std::string& blockName) {
+        m_cmdBlockName = blockName;
+    }
+
 protected:
     std::list<Command> m_cmdBlock;
     std::string        m_timeCmdBlockCreated;
+    std::string        m_cmdBlockName;
 };
 
 

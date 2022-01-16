@@ -7,6 +7,8 @@
 class AsyncBulkApp {
 public:
 	AsyncBulkApp(size_t bulkSize) : m_cmdPackage{ static_cast<int>(bulkSize) }  {
+		static int bulkAppNumber = 0;
+		m_cmdPackage.SetContextID(++bulkAppNumber);
 	}
 
 	void ReadBuffer(const char* data, std::size_t size) {

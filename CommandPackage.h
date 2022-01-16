@@ -10,8 +10,6 @@ class CommandPackage {
 public:
     CommandPackage(int blockSize) : m_blockSize{ blockSize } {
         SetBlockHandler (std::make_shared<StandartBlockHandler>());
-
-        m_threadMng = std::make_unique<ThreadManager>();
     }
 
     void ParseCommand(const Command& cmd);
@@ -20,6 +18,10 @@ public:
 
     inline int GetBlockSize() const {
         return m_blockSize;
+    }
+
+    inline void SetContextID(int ID) {
+        m_contextID = ID;
     }
 
 private:
@@ -40,8 +42,9 @@ private:
     }
 
 private:
+    int m_contextID = 0;
     std::shared_ptr<BlockHandler> m_blockHandlerPtr;
     const int m_blockSize;
     
-    std::unique_ptr<ThreadManager> m_threadMng;
+    static ThreadManager m_threadMng;
 };

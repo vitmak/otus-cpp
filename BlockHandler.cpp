@@ -9,7 +9,7 @@ std::string BlockHandler::ToString() const {
     if (m_cmdBlock.empty())
         return "";
 
-    std::string buf{ "bulk: " };
+    std::string buf{ "bulk" + m_cmdBlockName + ": " };
     auto it = m_cmdBlock.cbegin();
 
     buf += it->GetName();
