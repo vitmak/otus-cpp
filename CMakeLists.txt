@@ -1,32 +1,41 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(AsyncCmdProcessing VERSION 0.0.1)
+project(async VERSION 0.0.1)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-add_executable(AsyncCmdProcessing 
-               Command.h 
-               CommandProcessing.cpp 
+add_executable(async_cli main.cpp)
+
+set(ASYNC_LIB Command.h 
                BlockHandler.h BlockHandler.cpp 
                CommandPackage.h CommandPackage.cpp 
                Logger.h ConsoleLogger.h FileLogger.h 
                ThreadManager.h 
-               CommandQueue.h)
+               CommandQueue.h
+               async.h async.cpp)
 
-set_target_properties(AsyncCmdProcessing 
-    PROPERTIES
+add_library(libasync_static STATIC ${ASYNC_LIB})
+add_library(libasync SHARED ${ASYNC_LIB})
+
+set_target_properties(async_cli libasync libasync_static PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
 
-target_link_libraries(AsyncCmdProcessing PRIVATE Threads::Threads)
+target_include_directories(libasync PRIVATE "${CMAKE_BINARY_DIR}")
+
+target_link_libraries(libasync PRIVATE Threads::Threads)
+
+#target_link_libraries(async_cli libasync)
+target_link_libraries(async_cli libasync_static)
 
 if (MSVC)
-    target_compile_options(AsyncCmdProcessing PRIVATE /W4)
+    target_compile_options(libasync PRIVATE /W4)
 endif()
 
-install(TARGETS AsyncCmdProcessing RUNTIME DESTINATION bin)
+install(TARGETS async_cli RUNTIME DESTINATION bin)
+install(TARGETS libasync LIBRARY DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 
