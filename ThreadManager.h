@@ -30,12 +30,15 @@ public:
 	}
 
 	~ThreadManager() {
+		
+		NotifyStopping();
+
 		m_threadLog.join();
 		m_threadFile1.join();
 		m_threadFile2.join();
 	}
 
-	void StopThreads() {
+	void NotifyStopping() {
 		for (const auto& v : m_loggers)
 			v->m_queue.NotifyStopping();
 	}

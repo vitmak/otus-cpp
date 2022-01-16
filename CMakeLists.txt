@@ -13,7 +13,8 @@ set(ASYNC_LIB Command.h
                Logger.h ConsoleLogger.h FileLogger.h 
                ThreadManager.h 
                CommandQueue.h
-               async.h async.cpp)
+               async.h async.cpp
+               AsyncBulkApp.h)
 
 add_library(libasync_static STATIC ${ASYNC_LIB})
 add_library(libasync SHARED ${ASYNC_LIB})

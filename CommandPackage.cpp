@@ -23,7 +23,7 @@ void CommandPackage::SetBlockHandler(std::shared_ptr<BlockHandler> blockHandlerP
 
     m_blockHandlerPtr = blockHandlerPtr;
 
-    if (m_blockHandlerPtr == nullptr) {
+    /*if (m_blockHandlerPtr == nullptr) {
         m_threadMng->StopThreads();
-    }
+    }*/
 }
