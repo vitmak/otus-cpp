@@ -1,6 +1,6 @@
 #include "async.h"
 
-#include "Context.h"
+#include "AsyncBulkApp.h"
 
 
 namespace async {
@@ -17,8 +17,6 @@ void receive(handle_t handle, const char *data, std::size_t size) {
 }
 
 void disconnect(handle_t handle) {
-    auto hanlePtr = static_cast<AsyncBulkApp*>(handle);
-
     delete handle;
 }
 
