@@ -28,8 +28,11 @@ target_include_directories(libasync PRIVATE "${CMAKE_BINARY_DIR}")
 
 target_link_libraries(libasync PRIVATE Threads::Threads)
 
-target_link_libraries(async_cli libasync)
-#target_link_libraries(async_cli libasync_static)
+if (MSVC)
+    target_link_libraries(async_cli libasync_static)
+else ()
+    target_link_libraries(async_cli libasync)
+endif()
 
 if (MSVC)
     target_compile_options(libasync PRIVATE /W4)

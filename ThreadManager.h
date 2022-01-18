@@ -4,7 +4,6 @@
 #include "ConsoleLogger.h"
 #include "FileLogger.h"
 #include <thread>
-#include <chrono>
 
 
 class ThreadManager {
@@ -24,9 +23,6 @@ public:
 
 		m_loggers.push_back(consoleLogger);
 		m_loggers.push_back(fileLogger);
-
-		using namespace std::chrono_literals;
-		std::this_thread::sleep_for(1000ms);
 	}
 
 	~ThreadManager() {
