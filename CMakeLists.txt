@@ -9,7 +9,7 @@ find_package(Threads REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIR})
 
-add_executable(bulk_server main.cpp)
+add_executable(bulk_server main.cpp AsioAsyncServer.h)
 
 set(ASYNC_LIB Command.h 
                BlockHandler.h BlockHandler.cpp 
