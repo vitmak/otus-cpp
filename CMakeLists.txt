@@ -1,11 +1,15 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(async VERSION 0.0.1)
+project(bulk_server VERSION 0.0.1)
+
+find_package(Boost COMPONENTS system REQUIRED)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-add_executable(async_cli main.cpp)
+include_directories(${Boost_INCLUDE_DIR})
+
+add_executable(bulk_server main.cpp)
 
 set(ASYNC_LIB Command.h 
                BlockHandler.h BlockHandler.cpp 
@@ -19,7 +23,7 @@ set(ASYNC_LIB Command.h
 add_library(libasync_static STATIC ${ASYNC_LIB})
 add_library(libasync SHARED ${ASYNC_LIB})
 
-set_target_properties(async_cli libasync libasync_static PROPERTIES
+set_target_properties(bulk_server libasync libasync_static PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
@@ -29,16 +33,16 @@ target_include_directories(libasync PRIVATE "${CMAKE_BINARY_DIR}")
 target_link_libraries(libasync PRIVATE Threads::Threads)
 
 if (MSVC)
-    target_link_libraries(async_cli libasync_static)
+    target_link_libraries(bulk_server libasync_static ${Boost_LIBRARIES})
 else ()
-    target_link_libraries(async_cli libasync)
+    target_link_libraries(bulk_server libasync ${Boost_LIBRARIES})
 endif()
 
 if (MSVC)
     target_compile_options(libasync PRIVATE /W4)
 endif()
 
-install(TARGETS async_cli RUNTIME DESTINATION bin)
+install(TARGETS bulk_server RUNTIME DESTINATION bin)
 install(TARGETS libasync LIBRARY DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
