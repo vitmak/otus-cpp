@@ -21,30 +21,19 @@ public:
 private:
     void DoRead() {
         auto self(shared_from_this());
-        m_socket.async_read_some(boost::asio::buffer(m_data, max_length),
+        m_socket.async_read_some(boost::asio::buffer(m_data, MaxLength),
             [this, self](boost::system::error_code ec, std::size_t length)
             {
                 if (!ec) {
                     std::cout << "receive " << length << "=" << std::string{ m_data, length } << std::endl;
-                    DoWrite(length);
-                }
-            });
-    }
-
-    void DoWrite(std::size_t length) {
-        auto self(shared_from_this());
-        boost::asio::async_write(m_socket, boost::asio::buffer(m_data, length),
-            [this, self](boost::system::error_code ec, std::size_t /*length*/)
-            {
-                if (!ec) {
                     DoRead();
                 }
             });
     }
 
     tcp::socket m_socket;
-    enum { max_length = 1024 };
-    char m_data[max_length];
+    enum { MaxLength = 1024 };
+    char m_data[MaxLength];
 };
 
 class Server {
