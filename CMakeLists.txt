@@ -30,7 +30,7 @@ set_target_properties(bulk_server libasync libasync_static PROPERTIES
 
 target_include_directories(libasync PRIVATE "${CMAKE_BINARY_DIR}")
 
-target_link_libraries(libasync PRIVATE Threads::Threads)
+target_link_libraries(libasync Threads::Threads)
 
 if (MSVC)
     target_link_libraries(bulk_server libasync_static ${Boost_LIBRARIES})
