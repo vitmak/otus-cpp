@@ -1,7 +1,9 @@
 #pragma once
 
+#include "async.h"
 #include <cstdlib>
 #include <iostream>
+#include <string>
 #include <memory>
 #include <utility>
 #include <boost/asio.hpp>
@@ -12,6 +14,7 @@ class Session : public std::enable_shared_from_this<Session>
 {
 public:
     Session(tcp::socket socket) : m_socket(std::move(socket)) {
+        m_context = async::connect(3/*TODO: set as parameter*/);
     }
 
     void Start() {
@@ -25,8 +28,12 @@ private:
             [this, self](boost::system::error_code ec, std::size_t length)
             {
                 if (!ec) {
-                    std::cout << "receive " << length << "=" << std::string{ m_data, length } << std::endl;
+                    async::receive(m_context, m_data, length);
                     DoRead();
+                }
+                else {
+                    async::disconnect(m_context);
+                    m_socket.close();
                 }
             });
     }
@@ -34,6 +41,7 @@ private:
     tcp::socket m_socket;
     enum { MaxLength = 1024 };
     char m_data[MaxLength];
+    async::handle_t m_context;
 };
 
 class Server {

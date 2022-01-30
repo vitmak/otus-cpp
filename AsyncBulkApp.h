@@ -18,7 +18,10 @@ public:
 			std::swap(m_buffer, cmdName);
 	
 		for (size_t i = 0; i < size; ++i) {
-			if (data[i] != '\n')
+			if (data[i] == '\r') {
+				continue;
+			}
+			else if (data[i] != '\n')
 				cmdName += data[i];
 			else {
 				if (!cmdName.empty()) {

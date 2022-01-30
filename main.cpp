@@ -12,11 +12,11 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        boost::asio::io_context io_context;
+        boost::asio::io_context context;
 
-        Server server(io_context, std::atoi(argv[1]));
+        Server server(context, std::atoi(argv[1]));
 
-        io_context.run();
+        context.run();
     }
     catch (const std::exception& ex) {
         std::cerr << "Exception: " << ex.what() << "\n";

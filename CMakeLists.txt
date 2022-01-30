@@ -26,6 +26,7 @@ add_library(libasync SHARED ${ASYNC_LIB})
 set_target_properties(bulk_server libasync libasync_static PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
+    COMPILE_DEFINITIONS BOOST_ASIO_ENABLE_HANDLER_TRACKING
 )
 
 target_include_directories(libasync PRIVATE "${CMAKE_BINARY_DIR}")
