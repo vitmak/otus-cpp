@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 
         boost::asio::io_context context;
 
-        Server server(context, std::atoi(argv[1]));
+        Server server(context, std::atoi(argv[1]), std::atoi(argv[2]));
 
         context.run();
     }

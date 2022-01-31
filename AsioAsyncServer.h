@@ -13,8 +13,8 @@ using boost::asio::ip::tcp;
 class Session : public std::enable_shared_from_this<Session>
 {
 public:
-    Session(tcp::socket socket) : m_socket(std::move(socket)) {
-        m_context = async::connect(3/*TODO: set as parameter*/);
+    Session(tcp::socket socket, int bulkSize) : m_socket(std::move(socket)) {
+        m_context = async::connect(bulkSize);
     }
 
     void Start() {
@@ -46,8 +46,8 @@ private:
 
 class Server {
 public:
-    Server(boost::asio::io_context& io_context, short port)
-        : m_acceptor(io_context, tcp::endpoint(tcp::v4(), port))
+    Server(boost::asio::io_context& io_context, short port, int bulkSize)
+        : m_acceptor(io_context, tcp::endpoint(tcp::v4(), port)), m_bulkSize { bulkSize }
     {
         DoAccept();
     }
@@ -57,7 +57,7 @@ private:
         m_acceptor.async_accept(
             [this](boost::system::error_code ec, tcp::socket socket) {
                 if (!ec) {
-                    std::make_shared<Session>(std::move(socket))->Start();
+                    std::make_shared<Session>(std::move(socket), m_bulkSize)->Start();
                 }
 
                 DoAccept();
@@ -65,4 +65,6 @@ private:
     }
 
     tcp::acceptor m_acceptor;
+
+    int m_bulkSize; // TODO: use pointer to Config
 };
